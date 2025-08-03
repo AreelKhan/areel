@@ -2,10 +2,10 @@
 import { getCollection } from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
-import { CV } from "@consts";
-import CVCard from "@components/CVCard.astro";
+import { RESUME } from "@consts";
+import ResumeCard from "@components/ResumeCard.astro";
 
-// TO Modify
+// TODO: change this to resume page
 const works = [
   {company:"Company A", time: "2022-Present", job_title: "Research Scientist", location: "London, UK", description: "Your Notes about the job"},
   {company:"Company A", time: "2022-Present", job_title: "Research Scientist", location: "London, UK", description: "Your Notes about the job"},
@@ -15,7 +15,7 @@ const educations = [
 ]
 ---
 
-<Layout title={CV.TITLE} description={CV.DESCRIPTION}>
+<Layout title={RESUME.TITLE} description={RESUME.DESCRIPTION}>
   <Container>
     <aside data-pagefind-ignore>
       <div class="space-y-2 md:space-y-10">
@@ -24,7 +24,7 @@ const educations = [
         </div>
         <ul class="animate not-prose flex flex-col gap-4">
           {works.map((work) => (
-              <CVCard institution={work.company} time={work.time} job_title={work.job_title} location={work.location} description={work.description} />)
+              <ResumeCard institution={work.company} time={work.time} job_title={work.job_title} location={work.location} description={work.description} />)
           )}
         </ul>
         <div class="animate font-semibold text-black dark:text-white">
@@ -32,7 +32,7 @@ const educations = [
         </div>
         <ul class="animate not-prose flex flex-col gap-4">
           {educations.map((education) => (
-            <CVCard institution={education.school} time={education.time} job_title={education.job_title} location={education.location} description={education.description} />)
+            <ResumeCard institution={education.school} time={education.time} job_title={education.job_title} location={education.location} description={education.description} />)
         )}
         </ul>
       </div>
