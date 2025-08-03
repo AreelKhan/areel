@@ -18,22 +18,24 @@ const blog = (await getCollection("blog"))
   <Container>
     <aside data-pagefind-ignore>
       <h1 class="animate font-semibold text-black dark:text-white">
-        Areel Khan
+        About me
       </h1>
       <div class="space-y-16">
         <section>
           <article class="space-y-4">
-            TODO: Add a short bio here
+            <p>
+              I'm Areel, a new grad from the University of Waterloo with a Bachelor of Mathematics. I currently work as a Software Engineer at <a href="https://fablesecurity.com/" target="_blank" rel="noopener">Fable Security</a>, where I'm building data pipelines and agentic systems.
+            </p>
+            <p>
+              I've interned at <b>TD</b>, <b>Super</b>, <b>Hopper</b>, <b>Replicant</b>, <b>Trayd</b>, <b>Health Canada</b>, and the <b>University of Waterloo</b> doing data science, data engineering, software engineering, and machine learning research.
+            </p>
+            <p>
+              Outside of work, I tinker with LLM security, red teaming, and jailbreak techniques. See <Link href="/blog">blogs</Link> for more details.
+            </p>
           </article>
         </section>
 
-
-
-        <section class="animate space-y-6">
-          <span class="animate">
-            <SocialIcons icon_size={'text-3xl'} />
-          </span>
-        </section>
+        <hr class="border-gray-200 dark:border-gray-700" />
 
         <section class="animate space-y-6">
           <div class="flex flex-wrap items-center justify-between gap-y-2">
@@ -41,7 +43,7 @@ const blog = (await getCollection("blog"))
               Research and Engineering Interests
             </h2>
           </div>
-          <ul class="not-prose flex flex-col gap-4">
+          <ul class="not-prose flex flex-col gap-2">
             <li>Data pipelines</li>
             <li>Agentic Systems</li>
             <li>LLM safety alignment</li>
@@ -49,6 +51,7 @@ const blog = (await getCollection("blog"))
           </ul>
         </section>
         
+        <hr class="border-gray-200 dark:border-gray-700" />
 
         <section class="animate space-y-6">
           <div class="flex flex-wrap items-center justify-between gap-y-2">

@@ -4,10 +4,11 @@ export interface Props {
     time: string;
     job_title: string;
     location: string;
-    description: string
+    description: string;
+    technologies?: string;
   }
   
-const { institution, time, job_title, location, description } = Astro.props;
+const { institution, time, job_title, location, description, technologies } = Astro.props;
 ---
 
 <div class="py-5 px-8">
@@ -19,5 +20,6 @@ const { institution, time, job_title, location, description } = Astro.props;
         <div class="italic">{job_title}</div>
         <div>{time}</div>
     </div>
-    <p class="text-xs mt-2">{description}</p>
+    {technologies && <p class="text-xs mt-1 text-gray-600 dark:text-gray-400">{technologies}</p>}
+    <p class="text-xs mt-2" set:html={description}></p>
 </div>

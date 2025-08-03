@@ -2,15 +2,85 @@
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
 import { RESUME } from "@consts";
-import ResumeCard from "@components/ResumeCard.astro";
+import ExperienceCard from "@components/ExperienceCard.astro";
 
-// TODO: change this to resume page
 const works = [
-  {company:"Company A", time: "2022-Present", job_title: "Research Scientist", location: "London, UK", description: "Your Notes about the job"},
-  {company:"Company A", time: "2022-Present", job_title: "Research Scientist", location: "London, UK", description: "Your Notes about the job"},
+  {
+    company:"Trayd",
+    time: "May 2025 - Aug 2025",
+    job_title: "Software Engineer Intern",
+    location: "New York",
+    description: "Built a pipeline to sync data from production to staging while obfuscating sensitive data",
+    technologies: "Typescript, React, Next.js, Prisma, Postgres, TRPC, Railway"
+  },
+  {
+    company:"Fable Security",
+    time: "Jan 2025 - Apr 2025",
+    job_title: "Software Engineer Intern",
+    location: "San Francisco",
+    description: "Built the entire PySpark ETL pipeline powering Fable's security risk analytics products. Built an agent that generates security training for users, replacing a multi-day manual process with a single click.",
+    technologies: "Python, Django, GraphQL, Postgres, PySpark, Langchain, Langgraph, OpenAI, Docker, Helm"
+  },
+  {
+    company:"Health Canada",
+    time: "Sep 2023 - Jan 2025",
+    job_title: "Lead Machine Learning Engineer",
+    location: "Toronto",
+    description: "Led the development of a full-stack RAG system for improving toxicology research. Managed non-technical stakeholders. Set up the entire developer experience, LLM red teaming, and monitoring of the production application. Interviewed, hired, and trained two new interns.",
+    technologies: "Python, React, Langchain, Langgraph, Promptfoo, Prometheus, Grafana, Azure, K8s, Nginx"
+  },
+  {
+    company:"Replicant",
+    time: "May 2024 - Aug 2024",
+    job_title: "Software Engineer Intern",
+    location: "Remote",
+    description: "CTO and founder of the company: 'You are the most impactful intern we have ever hired'. Hooray! Migrated the entire microservices architecture to read/write from a single central Postgres database to read/write on multiple sharded databases, reducing latency and improving reliability. Finished project 2 months before expected.",
+    technologies: "Typescript, Next.js, Python, Postgres, GCP, Helm"
+  },
+  {
+    company: "Hopper",
+    time: "May 2023 - Sep 2023",
+    job_title: "Software Engineer Intern",
+    location: "Remote",
+    description: "Built a SQL pipeline to predict the home country of users enabling targeted marketing. Added data freshness monitoring and alerting in Airflow.",
+    technologies: "Python, Scala, BigQuery, SQL, Airflow, SnorkelAI"
+  },
+  {
+    company: "Bamboo Housing",
+    time: "Jun 2022 - Sep 2023",
+    job_title: "Product Engineer",
+    location: "Remote",
+    description: 'One of five founding members at <a href="https://bamboohousing.ca/" target="_blank" rel="noopener noreferrer">Bamboo Housing</a>, a fast-growing student housing startup with over 50k users.',
+    technologies: "Typescript, Next.js, React, MongoDB"
+  },
+  {
+    company: "Super",
+    time: "Sep 2022 - Dec 2022",
+    job_title: "Analytics Engineer Intern",
+    location: "Remote",
+    description: "Built an ETL pipeline in Airflow and dbt to integrate payments into NetSuite (this one was a pain lol).",
+    technologies: "Python, Airflow, dbt"
+  },
+  {
+    company: "TD Bank",
+    time: "Jan 2022 - Apr 2022",
+    job_title: "Data Science Intern",
+    location: "Remote",
+    description: "Built a text augmentation pipeline to improve customer sentiment analysis.",
+    technologies: "Python, Sklearn, Pandas"
+  },
+  {
+    company: "WAT.ai",
+    time: "Aug 2022 - Jan 2025",
+    job_title: "Director of Technology & Lead Engineer",
+    location: "Waterloo",
+    description: "Founded many verticals within the organization, managed all cloud and on prem infrastructure and GPU clusters, interviewed and hired over 50 members, made a lot of mistakes, and plenty of good friends",
+    technologies: "Python, Slurm, Docker, K8s, Lots of linux, WandB, DVC"
+  },
 ]
+
 const educations = [
-  {school:"University 1", time: "2022-Present", job_title: "BEng in Electronic Information Engineering", location: "London, UK", description: "Your Notes about the study"},
+  {school:"University of Waterloo", time: "Aug 2025", job_title: "Bachelor of Mathematics – Statistics", location: "Waterloo", description: "3.8/4.0 GPA"},
 ]
 ---
 
@@ -23,7 +93,7 @@ const educations = [
         </div>
         <ul class="animate not-prose flex flex-col gap-4">
           {works.map((work) => (
-              <ResumeCard institution={work.company} time={work.time} job_title={work.job_title} location={work.location} description={work.description} />)
+              <ExperienceCard institution={work.company} time={work.time} job_title={work.job_title} location={work.location} description={work.description} technologies={work.technologies} />)
           )}
         </ul>
         <div class="animate font-semibold text-black dark:text-white">
@@ -31,7 +101,7 @@ const educations = [
         </div>
         <ul class="animate not-prose flex flex-col gap-4">
           {educations.map((education) => (
-            <ResumeCard institution={education.school} time={education.time} job_title={education.job_title} location={education.location} description={education.description} />)
+            <ExperienceCard institution={education.school} time={education.time} job_title={education.job_title} location={education.location} description={education.description} />)
         )}
         </ul>
       </div>
