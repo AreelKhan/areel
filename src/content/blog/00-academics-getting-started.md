@@ -33,9 +33,9 @@ npm run dev
 Update your home page in `src/pages/index.astro`.
 
 
-## CV & About
+## CV
 
-Update your CV and About page in `src/pages/cv.astro` and `src/pages/about.astro`.
+Update your CV page in `src/pages/cv.astro`.
 
 ```ts
 const works = [
