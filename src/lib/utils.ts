@@ -19,3 +19,12 @@ export function readingTime(html: string) {
   const readingTimeMinutes = (wordCount / 200 + 1).toFixed();
   return `${readingTimeMinutes} min read`;
 }
+
+export function getBasePath(path: string): string {
+  const base = import.meta.env.BASE_URL || '/';
+  // Remove leading slash from path if it exists, then combine with base
+  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+  // Ensure base doesn't end with slash and path doesn't start with slash
+  const cleanBase = base.endsWith('/') ? base.slice(0, -1) : base;
+  return `${cleanBase}/${cleanPath}`;
+}
