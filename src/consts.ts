@@ -5,8 +5,7 @@ export const SITE: Site = {
   DESCRIPTION: "Areel Khan's personal website.",
   EMAIL: "areel.khan.career@gmail.com",
   NUM_POSTS_ON_HOMEPAGE: 2,
-  NUM_PUBLICATIONS_ON_HOMEPAGE: 3,
-  SITEURL: 'https://astro-micro-academic.vercel.app' // Update here to link the RSS icon to your website rss
+  SITEURL: 'https://areelkhan.github.io/areel'
 };
 
 export const HIGHLIGHTAUTHOR = "Areel Khan"
