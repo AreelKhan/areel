@@ -12,7 +12,8 @@ import pagefind from "astro-pagefind";
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://areelkhan.github.io/areel',
+  site: 'https://areelkhan.github.io',
+  base: '/areel',
   integrations: [tailwind(), sitemap(), mdx(), pagefind()],
   markdown: {
     shikiConfig: {
