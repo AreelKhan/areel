@@ -31,7 +31,7 @@ export const RESUME: Metadata = {
 };
 
 export const TAGS: Metadata = {
-  TITLE: "TAGS",
+  TITLE: "Tags",
   DESCRIPTION:
-    "blog tag filter",
+    "A collection of blog tags.",
 };
