@@ -21,9 +21,6 @@ const tags =  blog.flatMap(post => post.data.tags).filter((tag, index, self) => 
             <p class="text-gray-500 dark:text-gray-500">Tags content coming soon...</p>
           </div>
         </div>
-        <div class="animate font-semibold text-black dark:text-white">
-          Tags
-        </div>
         <ul class="flex flex-wrap ">
             {tags.map(tag => (
               <li class="my-3">
