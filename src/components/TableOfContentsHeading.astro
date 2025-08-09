@@ -1,5 +1,10 @@
 ---
-import type { Heading } from "./TableOfContents.astro";
+type Heading = {
+  depth: number;
+  slug: string;
+  text: string;
+  subheadings: Heading[];
+};
 import Link from "./Link.astro";
 
 // https://kld.dev/building-table-of-contents/

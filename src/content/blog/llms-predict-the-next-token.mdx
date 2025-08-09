@@ -9,13 +9,13 @@ tags: ['llms']
 ### Why I am writing this
 A few weeks ago, while sitting around a campfire (and being destroyed by mosquitos), my friends and I attempted to define what it means to "think".
 
-I began contemplating if what an LLM does could be called thinking. Although I would've loved to discuss that with my friends, they are not familiar with how an LLM works. And I certainly did not want to go on a tangent about embeddings and autoregression.
+I began contemplating if what an LLM does could be called thinking. Although I would've loved to discuss that with my friends, they are not familiar with how an LLM works. And I certainly did not want to go off on a tangent about embeddings and autoregression.
 
 If I were, however, to try to explain to them what an LLM does, I'd go about it something like this.
 
 
 ### Predicting the next word
-LLMs (like ChatGPT) can simply be thought of as a bot that predicts what the most likely next word in a sentence is. That's really it.
+LLMs (like ChatGPT) can simply be thought of as bots that predict what the most likely next word in a sentence is. That's really it. **** # TODO HERE
 
 An example:
 
@@ -54,16 +54,16 @@ So LLMs are actually loops[\*](#footnote-1):
 - and then out comes your question, the first word, AND the second word of the answer
 - and so on...
 
+So now think to yourself, are LLMs "thinking"? Who knows! What does thinking even mean? We'd have to step into the realm of philosophy and consciousness to make progress on that end. Perhaps a topic for another day.
 
-
-
-So now think to yourself, are LLMs "thinking"? I don't know, I don't even know what thinking means. It is, however, fascinating to think how such a stupid process can product such intelligent responses. It's admirable.
+What _can_ be said however, is that it's certainly fascinating how such a simple process produces such intelligent behavior. Now in a way I am certainly dumbing LLMs down right now, no part of hiring hundreds of PhDs, building a massive data center, gathering all human text available, architecting a complex AI model with billions of parameters, and then training it, is "simple". But the thought that an LLM is merely predicting the next word is still mind blowing.
 
 ### Not __just__ the next word
+Okay so a small confession. LLMs don't predict __just__ the most likely next word.
 
-LLMs don't predict __just__ the most likely next word. They also predict the second most likely next word, and third most and so on. You can think of it as a ranking. The LLM is basically saying, given this sentence, here is the next word that makes most sense, heres the one that makes second most sense, and so on. In technical terms, this is a probability distribution over all possible words in the LLM's vocabulary. We'll come back to vocabulary later.
+They also predict the second most likely next word, and third one and so on. You can think of it as a ranking. The LLM is basically saying, given this sentence, here is the next word that makes most sense, heres the one that makes second most sense, and so on. In technical terms, its returning a probability distribution over all possible words in the it's vocabulary. We'll come back to vocabulary later.
 
-When the LLM responds with its ranking, its the system that sits between you and the LLM that chooses which word to actually use. If you configure that system to pick the most likely word, then you would get (in a sense[\*\*](#footnote-2)) the most likely response to your question. However, you could configure it to instead pick one of the top three most likely words, in this case you'd get a more different or "unpredictable" response. The "temperature" of the LLM is a setting that lets you control how much randomness you want in the response. Here is an example:
+When the LLM responds with its ranking, you can choose to always use the first word in the ranking. Which is the most sensible one. If you do that you get (in a sense[\*\*](#footnote-2)) the most likely response to your question. However, you could also pick one of the top 3 most likely words, or the top 5, or whatever. n this case you'd get a more different or "unpredictable" response. The "temperature" of the LLM is a setting that lets you control how much randomness you want in the response. Here is an example:
 
 
 

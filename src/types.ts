@@ -10,3 +10,13 @@ export type Metadata = {
   TITLE: string;
   DESCRIPTION: string;
 };
+
+export interface RawHeading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+export interface TocHeading extends RawHeading {
+  subheadings: TocHeading[];
+}
