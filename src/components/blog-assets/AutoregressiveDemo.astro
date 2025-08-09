@@ -1,0 +1,143 @@
+---
+export interface LoopDemoProps {
+  prompt?: string;
+  tokens?: string[];
+  title?: string;
+}
+
+const defaultPrompt = "Question: Explain to me how a car works. Response:";
+const defaultTokens = [
+  "A",
+  "car",
+  "works",
+  "by",
+  "converting",
+  "fuel",
+  "into",
+  "motion.",
+];
+
+const { prompt = defaultPrompt, tokens = defaultTokens } = Astro.props as LoopDemoProps;
+---
+
+<div
+  id="loop-demo"
+  class="not-prose"
+  data-config={JSON.stringify({ prompt, tokens })}
+>
+  <div class="rounded-lg border border-black/15 bg-neutral-100 p-3 dark:border-white/20 dark:bg-neutral-900">
+    <div class="mb-2 flex items-center justify-between gap-2 text-xs text-black/60 dark:text-white/60">
+      <div class="flex items-center gap-2">
+        <button id="btnPlay" class="rounded border border-black/15 px-2 py-1 text-black dark:border-white/20 dark:text-white">Play</button>
+        <button id="btnStep" class="rounded border border-black/15 px-2 py-1 text-black dark:border-white/20 dark:text-white">Step</button>
+        <button id="btnReset" class="rounded border border-black/15 px-2 py-1 text-black dark:border-white/20 dark:text-white">Reset</button>
+      </div>
+      <div id="status" class="tabular-nums">0/{tokens.length}</div>
+    </div>
+
+    <div class="grid gap-3">
+      <div id="panelInput" class="rounded-md border border-black/10 bg-white px-3 py-2 font-mono text-[12px] leading-relaxed text-black/85 dark:border-white/10 dark:bg-neutral-800 dark:text-white/85">
+        <div class="text-black/50 dark:text-white/50">LLM sees</div>
+        <div id="inputText" class="whitespace-pre-wrap break-words">{prompt}</div>
+      </div>
+
+      <div class="mx-auto flex items-center gap-3 text-xs text-black/60 dark:text-white/60">
+        <div class="h-[1px] w-20 bg-black/20 dark:bg-white/20"></div>
+        <div id="panelLLM" class="grid place-content-center rounded-md border border-black/15 bg-neutral-50 px-3 py-1.5 text-black dark:border-white/20 dark:bg-neutral-800/60 dark:text-white">LLM</div>
+        <div class="h-[1px] w-20 bg-black/20 dark:bg-white/20"></div>
+      </div>
+
+      <div id="panelOutput" class="rounded-md border border-black/15 bg-neutral-50 px-3 py-2 font-mono text-[13px] text-black dark:border-white/20 dark:bg-neutral-800/60 dark:text-white">
+        <span class="text-black/60 dark:text-white/60">LLM returns:</span>
+        <span id="outputToken" class="ml-2"></span>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .active-ring { @apply ring-2 ring-cyan-400/70; }
+    .pulse { animation: pulse 0.8s ease-in-out infinite; }
+    @keyframes pulse { 0%, 100% { opacity: .5 } 50% { opacity: 1 } }
+  </style>
+
+  <script is:inline>
+    const root = document.getElementById('loop-demo');
+    const cfg = root ? JSON.parse(root.dataset.config || '{}') : { prompt: '', tokens: [] };
+    (function initLoopDemo() {
+      const btnPlay = document.getElementById('btnPlay');
+      const btnStep = document.getElementById('btnStep');
+      const btnReset = document.getElementById('btnReset');
+      const status = document.getElementById('status');
+      const panelInput = document.getElementById('panelInput');
+      const panelLLM = document.getElementById('panelLLM');
+      const panelOutput = document.getElementById('panelOutput');
+      const inputText = document.getElementById('inputText');
+      const outputToken = document.getElementById('outputToken');
+
+      if (!btnPlay || !btnStep || !btnReset || !status || !panelInput || !panelLLM || !panelOutput || !inputText || !outputToken) return;
+
+      let idx = 0;
+      let playing = false;
+      let loopTimer = 0;
+
+      function updateStatus() {
+        status.textContent = `${idx}/${cfg.tokens.length}`;
+      }
+
+      function clearHighlights() {
+        panelInput.classList.remove('active-ring');
+        panelLLM.classList.remove('active-ring','pulse');
+        panelOutput.classList.remove('active-ring');
+      }
+
+      function animateStep(next) {
+        clearHighlights();
+        panelInput.classList.add('active-ring');
+        setTimeout(() => {
+          clearHighlights();
+          panelLLM.classList.add('active-ring','pulse');
+          setTimeout(() => {
+            clearHighlights();
+            panelOutput.classList.add('active-ring');
+            const token = cfg.tokens[idx] ?? '';
+            outputToken.textContent = token;
+            inputText.textContent = `${inputText.textContent} ${token}`.trim();
+            idx = Math.min(idx + 1, cfg.tokens.length);
+            updateStatus();
+            if (playing && idx < cfg.tokens.length) queue(); else if (idx >= cfg.tokens.length) playing = false;
+            if (typeof next === 'function') next();
+          }, 600);
+        }, 400);
+      }
+
+      function queue() {
+        clearTimeout(loopTimer);
+        loopTimer = window.setTimeout(() => animateStep(), 200);
+      }
+
+      function playPause() {
+        if (playing) { playing = false; btnPlay.textContent = 'Play'; clearTimeout(loopTimer); return; }
+        if (idx >= cfg.tokens.length) reset();
+        playing = true; btnPlay.textContent = 'Pause'; queue();
+      }
+
+      function stepOnce() {
+        if (idx >= cfg.tokens.length) return;
+        animateStep(() => { btnPlay.textContent = 'Play'; playing = false; });
+      }
+
+      function reset() {
+        playing = false; clearTimeout(loopTimer); btnPlay.textContent = 'Play';
+        idx = 0; inputText.textContent = cfg.prompt; outputToken.textContent = ''; updateStatus(); clearHighlights();
+      }
+
+      btnPlay.addEventListener('click', playPause);
+      btnStep.addEventListener('click', stepOnce);
+      btnReset.addEventListener('click', reset);
+
+      reset();
+    })();
+  </script>
+</div>
+
+

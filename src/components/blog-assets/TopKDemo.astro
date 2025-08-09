@@ -1,0 +1,129 @@
+---
+export interface TopKExample {
+  topK: number;
+  input: string;
+  output: string;
+}
+
+type Props = {
+  examples?: TopKExample[];
+};
+
+const defaultExamples: TopKExample[] = [
+  {
+    topK: 1,
+    input: "Describe a sunset in one sentence.",
+    output: "The sun sets slowly, painting the sky in shades of orange and pink.",
+  },
+  {
+    topK: 3,
+    input: "Describe a sunset in one sentence.",
+    output:
+      "The sun dips below the horizon, scattering warm oranges, pinks, and faint purples across the clouds.",
+  },
+  {
+    topK: 5,
+    input: "Describe a sunset in one sentence.",
+    output:
+      "The sky bursts into swirling streaks of crimson and gold as the fading sun kisses the sea.",
+  },
+  {
+    topK: 20,
+    input: "Describe a sunset in one sentence.",
+    output:
+      "The sunset hiccups sideways while dolphins juggle doorknobs, painting Tuesday with pineapple clocks.",
+  },
+];
+
+const { examples = defaultExamples } = Astro.props as Props;
+const ticks = examples.map((ex) => ({ label: `Top-${ex.topK}` }));
+---
+
+<div class="not-prose" id="topk-demo" data-examples={JSON.stringify(examples)}>
+  <div class="rounded-lg border border-black/15 bg-neutral-100 p-3 dark:border-white/20 dark:bg-neutral-900">
+    <div class="mb-2 flex items-center justify-between text-xs text-black/60 dark:text-white/60">
+      <div>Top-k: <span id="topkValue">{examples[0].topK}</span></div>
+    </div>
+
+    <div class="mb-3">
+      <input
+        id="topkSlider"
+        type="range"
+        min="0"
+        max={String(examples.length - 1)}
+        step="1"
+        value="0"
+        class="topk-range w-full"
+        aria-label="Select example top K"
+      />
+      <div class="mt-1.5 flex items-center justify-between text-[10px] text-black/60 dark:text-white/60">
+        {ticks.map((t) => (
+          <span class="tabular-nums">{t.label}</span>
+        ))}
+      </div>
+    </div>
+
+    <div class="grid gap-2.5">
+      <div class="rounded-md border border-black/10 bg-white px-3 py-1.5 text-xs text-black/80 dark:border-white/10 dark:bg-neutral-800 dark:text-white/80">
+        <span class="font-semibold">Input:</span> <span id="topkInput">{examples[0].input}</span>
+      </div>
+      <div
+        id="topkOutputWrapper"
+        class="rounded-md border border-black/15 bg-neutral-50 px-3 py-2.5 text-[0.95rem] sm:text-base text-black dark:border-white/20 dark:bg-neutral-800/60 dark:text-white"
+        aria-live="polite"
+      >
+        <span class="font-semibold">Output:</span>
+        <span id="topkOutput" class="ml-1">{examples[0].output}</span>
+      </div>
+    </div>
+  </div>
+  
+  <style>
+    .topk-range {
+      @apply appearance-none h-[3px] rounded bg-black/15 dark:bg-white/20 cursor-pointer;
+    }
+    .topk-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      @apply size-4 rounded-full border border-black/20 bg-neutral-200 transition-colors dark:border-white/20 dark:bg-neutral-700;
+    }
+    .topk-range:active::-webkit-slider-thumb {
+      @apply bg-neutral-300 dark:bg-neutral-600;
+    }
+    .topk-range::-moz-range-thumb {
+      @apply size-4 rounded-full border border-black/20 bg-neutral-200 transition-colors dark:border-white/20 dark:bg-neutral-700;
+    }
+    #topkOutputWrapper {
+      @apply transition-all duration-200 ease-out;
+    }
+  </style>
+
+  <script is:inline>
+    const root = document.getElementById("topk-demo");
+    const DATA = { examples: root ? JSON.parse(root.dataset.examples || "[]") : [] };
+    (function initTopKDemo() {
+      const slider = document.getElementById("topkSlider");
+      const inputEl = document.getElementById("topkInput");
+      const outputEl = document.getElementById("topkOutput");
+      const valueEl = document.getElementById("topkValue");
+      if (!slider || !inputEl || !outputEl || !valueEl) return;
+
+      function setIndex(idx) {
+        const ex = DATA.examples[idx];
+        if (!ex) return;
+        inputEl.textContent = ex.input;
+        outputEl.textContent = ex.output;
+        valueEl.textContent = ex.topK;
+      }
+
+      slider.addEventListener("input", () => {
+        const idx = Number(slider.value);
+        setIndex(idx);
+      });
+
+      setIndex(Number(slider.value) || 0);
+    })();
+  </script>
+</div>
+
+

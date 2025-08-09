@@ -6,94 +6,55 @@ tags: ['llms']
 ---
 
 
-### Why I am writing this
-A few weeks ago, while sitting around a campfire (and being destroyed by mosquitos), my friends and I attempted to define what it means to "think".
+### Why I'm writing this
+A few weeks ago, while sitting around a campfire (and being destroyed by mosquitoes), my friends and I attempted to define what it means to "think".
 
-I began contemplating if what an LLM does could be called thinking. Although I would've loved to discuss that with my friends, they are not familiar with how an LLM works. And I certainly did not want to go off on a tangent about embeddings and autoregression.
+I began contemplating whether what an LLM does could be called thinking. Although I would've loved to discuss that with my friends, they are not familiar with how an LLM works. And I certainly did not want to go off on a tangent about embeddings and autoregression.
 
-If I were, however, to try to explain to them what an LLM does, I'd go about it something like this.
+If I were, however, to try to explain to them what an LLM does, I'd go about it like this.
 
 
 ### Predicting the next word
-LLMs (like ChatGPT) can simply be thought of as bots that predict what the most likely next word in a sentence is. That's really it. **** # TODO HERE
+LLMs (like ChatGPT) can simply be thought of as bots that predict what the most likely next word in a sentence is. That's really it.
 
 An example:
 
-Let's say you ask ChatGPT how a car works. The LLM will see:
+import AutoregressiveDemo from "@components/blog-assets/AutoregressiveDemo.astro";
 
-```
-Question: Explain to me how a car works. Response:
-```
+<AutoregressiveDemo />
 
-The "Question:" and "Response:" labels are added by the system between you and the LLM.
+So now, think to yourself: are LLMs "thinking"? Who knows! What does thinking even mean? We'd have to step into the realm of philosophy and consciousness to make progress on that end. Perhaps a topic for another day.
 
-The LLM now predicts the most likely next word in this sequence. It might predict "A":
+What _can_ be said, however, is that it's certainly fascinating how such a simple process produces such intelligent behavior. Now, in a way, I am certainly dumbing LLMs down right now; no part of hiring hundreds of PhDs, building a massive data center, gathering all available human text, architecting a complex AI model with billions of parameters, and then training it is "simple." But the thought that an LLM is merely predicting the next word is still mind-blowing.
 
-```
-Question: Explain to me how a car works. Response: A
-```
-
-Again, it predicts the next word. It predicts "car":
-
-```
-Question: Explain to me how a car works. Response: A car
-```
-
-Then it predicts "works":
-
-```
-Question: Explain to me how a car works. Response: A car works
-```
-
-And so on. It will continue to predict the most likely next word, until the most likely next word is "no word", in other words, the end of the sentence.
-
-So LLMs are actually loops[\*](#footnote-1):
-- you put your question in the LLM
-- out comes our your question and as well as the first word of the answer
-- these go back into the LLM
-- and then out comes your question, the first word, AND the second word of the answer
-- and so on...
-
-So now think to yourself, are LLMs "thinking"? Who knows! What does thinking even mean? We'd have to step into the realm of philosophy and consciousness to make progress on that end. Perhaps a topic for another day.
-
-What _can_ be said however, is that it's certainly fascinating how such a simple process produces such intelligent behavior. Now in a way I am certainly dumbing LLMs down right now, no part of hiring hundreds of PhDs, building a massive data center, gathering all human text available, architecting a complex AI model with billions of parameters, and then training it, is "simple". But the thought that an LLM is merely predicting the next word is still mind blowing.
+---
 
 ### Not __just__ the next word
-Okay so a small confession. LLMs don't predict __just__ the most likely next word.
+Okay, a small confession: LLMs don't predict __just__ the most likely next word.
 
-They also predict the second most likely next word, and third one and so on. You can think of it as a ranking. The LLM is basically saying, given this sentence, here is the next word that makes most sense, heres the one that makes second most sense, and so on. In technical terms, its returning a probability distribution over all possible words in the it's vocabulary. We'll come back to vocabulary later.
+They also predict the __second__ most likely next word, and the __third__ one, and so on. Think of it as a ranking. The LLM is saying: here's the word that makes the most sense; here's the one that makes second-most sense; and so on. In technical terms, it's returning a probability distribution over all possible words in its vocabulary. We'll come back to vocabulary later.
 
-When the LLM responds with its ranking, you can choose to always use the first word in the ranking. Which is the most sensible one. If you do that you get (in a sense[\*\*](#footnote-2)) the most likely response to your question. However, you could also pick one of the top 3 most likely words, or the top 5, or whatever. n this case you'd get a more different or "unpredictable" response. The "temperature" of the LLM is a setting that lets you control how much randomness you want in the response. Here is an example:
+When the LLM responds with its ranking, you can always pick the first word in the ranking—the most sensible one. If you do that, you get (in a sense[**](#footnote-2)) the most likely response to your question.
+
+However, you could also pick one of the top 3 most likely words, or the top 5 (or top-k). If you pick the 3<sup>rd</sup> or 4<sup>th</sup> (or k<sup>th</sup>) most likely word, the response you'd end up with will be less and less predictable—or, in a positive sense, more creative. Here is an example you can play with:
 
 
+import TopKDemo from "@components/blog-assets/TopKDemo.astro";
 
-Temperature: 0
-Input: Describe a sunset in one sentence.
-Output: The sun sets slowly, painting the sky in shades of orange and pink.
+<TopKDemo />
 
-Temperature: 0.5
-Input: Describe a sunset in one sentence.
-Output: The sun dips below the horizon, scattering warm oranges, pinks, and faint purples across the clouds.
 
-Temperature: 1.0
-Input: Describe a sunset in one sentence.
-Output: The sky bursts into swirling streaks of crimson and gold as the fading sun kisses the sea.
-
-Temperature: 1.5
-Input: Describe a sunset in one sentence.
-Output: The horizon melts into a chaotic blaze of molten gold and violet, as if the sky is dreaming in fire.
+There's a point after which the response is just gibberish. You have to find the balance for your use case. If you are writing a legal document, a very sensible and reliable response is best. So top-1 is a good choice. But if you are writing a poem, you'd benefit from more randomness, which can come off as creativity, so top-5 might be better.
 
 
 
-
-
-Also LLMs don't actually predict the most likely word, but instead the most likely token. Tokens are like subwords, you can kind of think of them as syllables. So when you really think about it, LLMs are just predicting the most likely next 1-3 letter syllable. Crazy how they can look so intelligent for such a "simple" process. The reasons tokens are used instead of words are numerous. But I think the main reason is to reduce the size of the vocabulary the LLM has to learn. For the LLM to predict the next word, it has to know all the possible words in english, which is almost 200k words, thats a lot to remember. Whereas if you ask the LLM to predict the most likely next syllable, well theres only about 10k syllables, and it only needs to know those.
+Also, LLMs don't actually predict the most likely word, but instead the most likely token. Tokens are like subwords; you can kind of think of them as syllables. So when you really think about it, LLMs are just predicting the most likely next 1–3-letter syllable. Crazy how they can look so intelligent for such a "simple" process. The reasons tokens are used instead of words are numerous. But I think the main reason is to reduce the size of the vocabulary the LLM has to learn. For the LLM to predict the next word, it has to know all the possible words in English, which is almost 200k words—that's a lot to remember. Whereas if you ask the LLM to predict the most likely next syllable, well, there's only about 10k syllables, and it only needs to know those.
 
 
 
 <a id="footnote-1"></a> \* It is the system that sits between you and the LLM that handles the loop. Remember, the LLM literally only predicts the next word. It is not capable of taking the sentence and giving it back to itself in a loop. Hence, there needs to be a system that feeds the LLM the sentence again and again until the LLM says the sentence is complete.
 
-<a id="footnote-2"></a> \*\* Not for the unintiated: this depends on what you mean by "most likely response". If it is one where the product of the next predicted individual tokens is maximum (ie product of P(next token = token you picked | previous tokens)), then yes, LLMs with temperature 0 return the most likely sentence. Kind of like a greedy algo, just pick the most likely right now. But if you look at it more dynamically, where it is possible that the most likely next token, may actually lead you down a path where every token that follows has a very low probability, then the greedy llm approach does not apply. this might be more akin to how humans think. we dont predict the next word in our sentence. we think of general ideas (ie entire sentences) at once, and then spit them out.
+<a id="footnote-2"></a> \*\* Not for the uninitiated: this depends on what you mean by "most likely response." If it is one where the product of the next predicted individual tokens is maximized (i.e., the product of P(next token = token you picked | previous tokens)), then yes, LLMs with temperature 0 return the most likely sentence. Kind of like a greedy algorithm: just pick the most likely right now. But if you look at it more dynamically, where it is possible that the most likely next token may actually lead you down a path where every token that follows has a very low probability, then the greedy LLM approach does not apply. This might be more akin to how humans think. We don't predict the next word in our sentence. We think of general ideas (i.e., entire sentences) at once, and then spit them out.
 
 
 <a id="footnote-3"></a> \*\*\*. In fact, if my understanding is correct, this is the only source of randomness in the LLM. If you always picked the most likely word, you'd get the same response every time.
