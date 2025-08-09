@@ -5,24 +5,36 @@ import TableOfContentsHeading from "./TableOfContentsHeading.astro";
 const { headings } = Astro.props;
 const toc = buildToc(headings);
 
-export interface Heading {
+export interface RawHeading {
   depth: number;
   slug: string;
   text: string;
 }
 
-function buildToc(headings: Heading[]) {
-  const toc: Heading[] = [];
-  const parentHeadings = new Map();
-  headings.forEach((h) => {
-    const heading = { ...h, subheadings: [] };
-    parentHeadings.set(heading.depth, heading);
-    if (heading.depth === 2) {
-      toc.push(heading);
-    } else {
-      parentHeadings.get(heading.depth - 1).subheadings.push(heading);
+export interface TocHeading extends RawHeading {
+  subheadings: TocHeading[];
+}
+
+function buildToc(rawHeadings: RawHeading[]): TocHeading[] {
+  const toc: TocHeading[] = [];
+  const stack: TocHeading[] = [];
+
+  rawHeadings.forEach((raw) => {
+    const node: TocHeading = { ...raw, subheadings: [] };
+
+    while (stack.length > 0 && stack[stack.length - 1].depth >= node.depth) {
+      stack.pop();
     }
+
+    if (stack.length === 0) {
+      toc.push(node);
+    } else {
+      stack[stack.length - 1].subheadings.push(node);
+    }
+
+    stack.push(node);
   });
+
   return toc;
 }
 ---

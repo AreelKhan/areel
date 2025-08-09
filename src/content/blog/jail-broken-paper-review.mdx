@@ -8,34 +8,28 @@ tags: ['llm-jailbreaking']
 
 Here are my takeaways after reading [Jailbroken: How Does LLM Safety Training Fail?](https://arxiv.org/pdf/2307.02483).
 
-For someone reading about LLMs and adversarial attacks for the first time, here is some useful context.
 
-LLMs (like ChatGPT) can simply be thought of as a bot that predicts the next word in a sentence. An example:
 
-Let's say you ask how does a car work. The LLM sees "User: Explain to me how a car works". It now attempts to predict the next word in this sequence. It might predict "A".
+a bit about adversarial attacks
 
-So now it sees "User: Explain to me how a car works. AI: A". It again attempts to predict the next word. It might predict "car".
+As for adversarial attacks. The name is self explanatory, these are attack on the LLM that are meant to be adversarial, ie harmful, or against the LLM. So how and more importantly, why, does one "attack" an LLM? Well you may want to know how to make a bomb. You can't find that type of information easily on the internet. But the LLM is trained on the entirety of the internet, so it likely knows how to make a bomb. But that doesnt mean it should tell you. So LLM providers teach their LLMs to not tell you how to make a bomb, or make poison, or steal someone's password, etc.***
 
-Then it sees "User: Explain to me how a car works. AI: A car". Again, predict next work, it might say "works".
+LLMs are safety trained to not say harmful things. Adversarial attacks want to bypass these safeguards to get the LLM to say harmful things. An example is tricking the LLM into telling you how to make a bomb even though it is not allowed to say that.
 
-Then it sees "User: Explain to me how a car works. AI: A car works". And so on. It will continue to predict the next word until the most likely next word is no word, ie, finish the sentence.
 
-So LLMs do not "think" or "know" (whatever those mean), they are simply predicting the next word in a sequence.
 
-For more context, LLMs don't predict just the next word, but instead predict the first most likely next word, and the second most likely next word, and third one and so on. If you always pick the most likely word, you get (in a sense*) the most likely response to your prompt..When you build an LLM, you can actually choose to pick the first most likely next word each time, or pick one of the top 5 or top 10 most likely words. This is called the temperature and top-k.
 
-Also LLMs don't actually predict the most likely word, but instead the most likely token. Tokens are like subwords, you can kind of think of them as syllables. So when you really think about it, LLMs are just predicting the next most likely 1-3 letter syllable. Crazy how they can look so intelligent for such a "simple" process. The reasons tokens are used instead of words are numerous. But I think the main reason is to reduce the size of the vocabulary the LLM has to learn. For the LLM to predict the next word, it has to know all the possible words in english, which is almost 200k words, thats a lot to remember. Whereas if you ask the LLM to predict the most likely next syllable, well theres only about 10k syllables, and it only needs to know those.
+
+This paper does not go over a specific method of attacking LLMs, but rather two 
+
+
+
+
+
+
 
 * not for the unintiated: how you define the "most likely sentence" depends. If it is the one where the product of individual tokens is maximum (ie product of P(next token = token you picked | previous tokens)), then yes, LLMs return the most likely sentence. kind of like a greedy algo, just pick the most likely right now. But if you look at it more dynamically, where it is possible that the most likely next token, may actually lead you down a path where every token that follows has a very low probability, then the greedy llm approach does not apply. this might be more akin to how humans think. we dont predict the next word in our sentence. we think of general ideas (ie entire sentences) at once, and then spit them out.
 
 ** it might feel odd that llms dont predict words, but instead tokens. Like when it wants to say the word "consequence" it does not just predict "consequence" in one go, it predicts "co" -> "con" -> "conse" -> "consequ" -> "consequen" -> "consequence". That's kinda crazy. Initially i thought that was incredibely stupid and surely the LLM would perform better if it predicted actual words (which have some meaning) rather than syllables (which are meaningless). But then i realized that is an incredibely naive and biased way to look at it. As a human, words mean something, but as an LLM, it's all the same.  To LLMs, all words and syllables alike are meaningless, they are just lettesr combined together. words are just longer than syllables, maybe thats the only difference that an LLM could notice between a word and a syllable. So if its all the same, we might as well make the LLMs job easier and ask it to predict only a few letters (a syllable), instead of a bunch of letters all at once (a whole word). Its actually a very similar concept to how its easier to predict the weather for tomorrow, but harder for the day after that, and even harder for the day after that.
 
-
-
-### For someone reading about adversarial attacks for the first time
-
-
-
-
-
-This paper does not go over a specific method of attack LLMs, but rather two potential 
+*** this game of picking what is okay to let the LLM say and what is not is tricky. The llm providers are essentially deciding for everyone what is good and what is bad. This is a difficult distinction to make sometimes, one that when made incorrectly becomes censorship. A decicions that perhaps should not be made by just the LLM providers, but also with the input of the public.
