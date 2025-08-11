@@ -1,6 +1,6 @@
 ---
 title: "LLMs only predict the next word in a sentence"
-description: "A hand-wavy explanation for how LLMs generate responses"
+description: "A hand-wavy explanation for how LLMs are autoregressive"
 date: "2025-08-09"
 tags: ['llms']
 ---
@@ -9,34 +9,32 @@ tags: ['llms']
 ### Why I'm writing this
 A few weeks ago, while sitting around a campfire (and being destroyed by mosquitoes), my friends and I attempted to define what it means to "think".
 
-I began contemplating whether what an LLM does could be called thinking. Although I would've loved to discuss that with my friends, they are not familiar with how an LLM works. And I certainly did not want to go off on a tangent about embeddings and autoregression.
+I began contemplating whether what an LLM does could be called thinking. Although I would've loved to discuss that with my friends, they are not familiar with how an LLM works. And I certainly did not want to go off on a tangent about embeddings, self-attention, and autoregression.
 
 If I were, however, to try to explain to them what an LLM does, I'd go about it like this.
 
 
-### Predicting the next word
-LLMs (like ChatGPT) can simply be thought of as bots that predict what the most likely next word in a sentence is. That's really it.
+### Predicting the _next_ word
+LLMs (like ChatGPT) simply predict the __most likely next word__ in a sentence is. That's really it.
 
 An example:
 
-import AutoregressiveDemo from "@components/blog-assets/AutoregressiveDemo.astro";
+Let's say you ask the LLM "how do cars work?".
 
-<AutoregressiveDemo />
+So now, think to yourself: are LLMs "thinking"? Who knows! What does thinking even mean? That answer probably lies in the realm of philosophy and consciousness. Perhaps a topic for another day.
 
-So now, think to yourself: are LLMs "thinking"? Who knows! What does thinking even mean? We'd have to step into the realm of philosophy and consciousness to make progress on that end. Perhaps a topic for another day.
-
-What _can_ be said, however, is that it's certainly fascinating how such a simple process produces such intelligent behavior. Now, in a way, I am certainly dumbing LLMs down right now; no part of hiring hundreds of PhDs, building a massive data center, gathering all available human text, architecting a complex AI model with billions of parameters, and then training it is "simple." But the thought that an LLM is merely predicting the next word is still mind-blowing.
+What _can_ be said, however, is that it's certainly fascinating how such a simple process produces such intelligent behavior. Now, in a way, I am certainly dumbing LLMs down; no part of hiring hundreds of PhDs, building a massive data center, gathering all available human text, architecting a complex AI model with billions of parameters, and then training it should be referred to as "simple." But the thought that an LLM is merely predicting the next word is still mind-blowing.
 
 ---
 
-### Not __just__ the next word
+### Well, not _just_ the next word
 Okay, a small confession: LLMs don't predict __just__ the most likely next word.
 
 They also predict the __second__ most likely next word, and the __third__ one, and so on. Think of it as a ranking. The LLM is saying: here's the word that makes the most sense; here's the one that makes second-most sense; and so on. In technical terms, it's returning a probability distribution over all possible words in its vocabulary. We'll come back to vocabulary later.
 
-When the LLM responds with its ranking, you can always pick the first word in the ranking—the most sensible one. If you do that, you get (in a sense[**](#footnote-2)) the most likely response to your question.
+When the LLM responds with its ranking, you can always pick the first word in the ranking. Which is the most sensible one. If you do that, you get (in a sense[**](#footnote-2)) the most likely response to your question.
 
-However, you could also pick one of the top 3 most likely words, or the top 5 (or top-k). If you pick the 3<sup>rd</sup> or 4<sup>th</sup> (or k<sup>th</sup>) most likely word, the response you'd end up with will be less and less predictable—or, in a positive sense, more creative. Here is an example you can play with:
+However, you could also pick one of the top 3 most likely words, or the top 5 (or top-k). If you pick the 3<sup>rd</sup> or 4<sup>th</sup> (or k<sup>th</sup>) most likely word, the response you'd end up with will be less and less predictable, or, in a positive sense, more creative. Here is an example you can play with:
 
 
 import TopKDemo from "@components/blog-assets/TopKDemo.astro";
@@ -46,7 +44,11 @@ import TopKDemo from "@components/blog-assets/TopKDemo.astro";
 
 There's a point after which the response is just gibberish. You have to find the balance for your use case. If you are writing a legal document, a very sensible and reliable response is best. So top-1 is a good choice. But if you are writing a poem, you'd benefit from more randomness, which can come off as creativity, so top-5 might be better.
 
+---
 
+### Actually, not _even_ just the next word
+
+Okay so, another confession, LLMs don't even predict the next word. LLMs do not konw what 
 
 Also, LLMs don't actually predict the most likely word, but instead the most likely token. Tokens are like subwords; you can kind of think of them as syllables. So when you really think about it, LLMs are just predicting the most likely next 1–3-letter syllable. Crazy how they can look so intelligent for such a "simple" process. The reasons tokens are used instead of words are numerous. But I think the main reason is to reduce the size of the vocabulary the LLM has to learn. For the LLM to predict the next word, it has to know all the possible words in English, which is almost 200k words—that's a lot to remember. Whereas if you ask the LLM to predict the most likely next syllable, well, there's only about 10k syllables, and it only needs to know those.
 

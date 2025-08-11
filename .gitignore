@@ -1,3 +1,5 @@
+# JS?TS
+
 # build output
 dist/
 # generated types
@@ -25,3 +27,9 @@ pnpm-debug.log*
 
 teaser.pptx
 ~$teaser.pptx
+
+
+
+# PYTHON
+__pycache__/
+media/
