@@ -21,7 +21,7 @@ FONT_SIZE = 25
 EXPLANATION_FONT_SIZE = 26
 
 TRANSFORM_TIME = 1.6
-EXPLANATION_FADE_TIME = 0.2
+EXPLANATION_FADE_TIME = 0.35
 LLM_THINKING_TIME = 0.5
 SCENE_UPSHIFT = 0.6
 LABEL_BOTTOM_OFFSET = 0.9
@@ -56,9 +56,9 @@ class AutoRegressionExample(Scene):
             moving_copy = input_text.copy()
             self.add(moving_copy)
             if index == 0:
-                label_input = Text("Question goes into the LLM", font_size=EXPLANATION_FONT_SIZE)
+                label_input = Text("Your question goes into the LLM", font_size=EXPLANATION_FONT_SIZE)
             else:
-                label_input = Text("Question + LLM's response go back into the LLM", font_size=EXPLANATION_FONT_SIZE)
+                label_input = Text("Your question + LLM's predictions go back into the LLM", font_size=EXPLANATION_FONT_SIZE - 4)
             label_input.to_edge(DOWN)
             label_input.shift(UP * LABEL_BOTTOM_OFFSET)
             self.play(FadeIn(label_input), run_time=EXPLANATION_FADE_TIME)
@@ -68,11 +68,11 @@ class AutoRegressionExample(Scene):
                     llm,
                     replace_mobject_with_target_in_scene=False,
                 ),
-                run_time=TRANSFORM_TIME,
+                run_time=TRANSFORM_TIME+0.3,
             )
             self.play(FadeOut(label_input), run_time=EXPLANATION_FADE_TIME)
             # LLM "thinking" pulse
-            label_thinking = Text("LLM \"thinks\"", font_size=EXPLANATION_FONT_SIZE)
+            label_thinking = Text("The LLM \"thinks\"", font_size=EXPLANATION_FONT_SIZE)
             label_thinking.to_edge(DOWN)
             label_thinking.shift(UP * LABEL_BOTTOM_OFFSET)
             self.play(FadeIn(label_thinking), run_time=EXPLANATION_FADE_TIME)
@@ -84,7 +84,7 @@ class AutoRegressionExample(Scene):
             
             token = Text(token_text, font_size=FONT_SIZE, color=BLUE)
             token.move_to(llm.get_center() + (4, -3, 0))
-            label_predict = Text("LLM predicts the next word", font_size=EXPLANATION_FONT_SIZE)
+            label_predict = Text("The LLM predicts the next word", font_size=EXPLANATION_FONT_SIZE)
             label_predict.to_edge(DOWN)
             label_predict.shift(UP * LABEL_BOTTOM_OFFSET)
             self.play(FadeIn(label_predict), run_time=EXPLANATION_FADE_TIME)
@@ -102,7 +102,7 @@ class AutoRegressionExample(Scene):
             token_at_input = Text(token_text, font_size=FONT_SIZE, color=BLUE)
             token_at_input.next_to(response, RIGHT, buff=0.08)
             token_at_input.align_to(response, DOWN)
-            label_append = Text("Predicted word gets added to the sentence", font_size=EXPLANATION_FONT_SIZE)
+            label_append = Text("The predicted word gets added to the sentence", font_size=EXPLANATION_FONT_SIZE)
             label_append.to_edge(DOWN)
             label_append.shift(UP * LABEL_BOTTOM_OFFSET)
             self.play(FadeIn(label_append), run_time=EXPLANATION_FADE_TIME)
