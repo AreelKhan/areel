@@ -28,7 +28,7 @@ LABEL_BOTTOM_OFFSET = 0.9
 
 INITIAL_PROMPT_TEXT = "Question: How does a car work?"
 INITIAL_RESPONSE_TEXT = "Answer: "
-RESPONSE_TEXTS = ["A ", "car ", "works ", "by ", "using ", "an ", "engine "]
+RESPONSE_TEXTS = ["A ", "car ", "works ", "by "]
 
 
 class AutoRegressionExample(Scene):
@@ -49,13 +49,13 @@ class AutoRegressionExample(Scene):
         response.align_to(prompt, LEFT)
         input_text = VGroup(prompt, response)
         input_text.move_to(llm.get_center() + (-4, -3, 0))
-        self.play(Write(input_text), run_time=0.5)
+        self.play(Write(input_text), run_time=1)
         
         current_response_text = INITIAL_RESPONSE_TEXT
-        for index, token_text in enumerate(RESPONSE_TEXTS):
-            moving_copy = input_text.copy()
-            self.add(moving_copy)
-            if index == 0:
+        for step_index, next_token in enumerate(RESPONSE_TEXTS):
+            input_copy_for_animation = input_text.copy()
+            self.add(input_copy_for_animation)
+            if step_index == 0:
                 label_input = Text("Your question goes into the LLM", font_size=EXPLANATION_FONT_SIZE)
             else:
                 label_input = Text("Your question + LLM's predictions go back into the LLM", font_size=EXPLANATION_FONT_SIZE - 4)
@@ -64,7 +64,7 @@ class AutoRegressionExample(Scene):
             self.play(FadeIn(label_input), run_time=EXPLANATION_FADE_TIME)
             self.play(
                 Transform(
-                    moving_copy,
+                    input_copy_for_animation,
                     llm,
                     replace_mobject_with_target_in_scene=False,
                 ),
@@ -76,22 +76,22 @@ class AutoRegressionExample(Scene):
             label_thinking.to_edge(DOWN)
             label_thinking.shift(UP * LABEL_BOTTOM_OFFSET)
             self.play(FadeIn(label_thinking), run_time=EXPLANATION_FADE_TIME)
-            self.play(FadeToColor(moving_copy, BLUE), run_time=LLM_THINKING_TIME)
-            self.play(FadeToColor(moving_copy, WHITE), run_time=LLM_THINKING_TIME)
-            self.play(FadeToColor(moving_copy, BLUE), run_time=LLM_THINKING_TIME)
-            self.play(FadeToColor(moving_copy, WHITE), run_time=LLM_THINKING_TIME)
+            self.play(FadeToColor(input_copy_for_animation, BLUE), run_time=LLM_THINKING_TIME)
+            self.play(FadeToColor(input_copy_for_animation, WHITE), run_time=LLM_THINKING_TIME)
+            self.play(FadeToColor(input_copy_for_animation, BLUE), run_time=LLM_THINKING_TIME)
+            self.play(FadeToColor(input_copy_for_animation, WHITE), run_time=LLM_THINKING_TIME)
             self.play(FadeOut(label_thinking), run_time=EXPLANATION_FADE_TIME)
             
-            token = Text(token_text, font_size=FONT_SIZE, color=BLUE)
-            token.move_to(llm.get_center() + (4, -3, 0))
+            predicted_token = Text(next_token, font_size=FONT_SIZE, color=BLUE)
+            predicted_token.move_to(llm.get_center() + (4, -3, 0))
             label_predict = Text("The LLM predicts the next word", font_size=EXPLANATION_FONT_SIZE)
             label_predict.to_edge(DOWN)
             label_predict.shift(UP * LABEL_BOTTOM_OFFSET)
             self.play(FadeIn(label_predict), run_time=EXPLANATION_FADE_TIME)
             self.play(
                 Transform(
-                    moving_copy,
-                    token,
+                    input_copy_for_animation,
+                    predicted_token,
                     replace_mobject_with_target_in_scene=False,
                     path_arc=0.5,
                 ),
@@ -99,17 +99,17 @@ class AutoRegressionExample(Scene):
             )
             self.play(FadeOut(label_predict), run_time=EXPLANATION_FADE_TIME)
 
-            token_at_input = Text(token_text, font_size=FONT_SIZE, color=BLUE)
-            token_at_input.next_to(response, RIGHT, buff=0.08)
-            token_at_input.align_to(response, DOWN)
+            token_to_append = Text(next_token, font_size=FONT_SIZE, color=BLUE)
+            token_to_append.next_to(response, RIGHT)
+            token_to_append.align_to(response, DOWN)
             label_append = Text("The predicted word gets added to the sentence", font_size=EXPLANATION_FONT_SIZE)
             label_append.to_edge(DOWN)
             label_append.shift(UP * LABEL_BOTTOM_OFFSET)
             self.play(FadeIn(label_append), run_time=EXPLANATION_FADE_TIME)
             self.play(
                 Transform(
-                    moving_copy,
-                    token_at_input,
+                    input_copy_for_animation,
+                    token_to_append,
                     replace_mobject_with_target_in_scene=False,
                     path_arc=-0.6,
                 ),
@@ -117,13 +117,13 @@ class AutoRegressionExample(Scene):
             )
             self.play(FadeOut(label_append), run_time=EXPLANATION_FADE_TIME)
             
-            new_response_text = current_response_text + token_text
+            new_response_text = current_response_text + next_token
             new_response = Text(new_response_text, font_size=FONT_SIZE)
             new_response.next_to(prompt, DOWN)
             new_response.align_to(prompt, LEFT)
 
             response.become(new_response)
-            self.play(FadeOut(moving_copy), run_time=EXPLANATION_FADE_TIME)
+            self.play(FadeOut(input_copy_for_animation), run_time=EXPLANATION_FADE_TIME)
             input_text = VGroup(prompt, response)
             current_response_text = new_response_text
 
