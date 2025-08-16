@@ -16,7 +16,7 @@ If I were, however, to try to explain how an LLM generates responses, I'd go abo
 ### Predicting the _next_ word
 LLMs (like ChatGPT) simply predict the __next word__ in a sentence is.
 
-An example. Let's say you ask the LLM `How does a car work?`. Here's how the answer gets generated:
+An example. Let's say you ask the LLM "How does a car work?". Here's how the answer gets generated<sup>[1](#f1)</sup>:
 
 <video controls width="700" style={{ margin: "2rem 0" }}>
   <source src="/areel/videos/AutoRegressionExample.mp4" type="video/mp4" />
@@ -28,62 +28,87 @@ Given the question, the LLM predicts, not the full answer to your question, but 
 
 After seeing trillions of english texts during training, it has learned that the answer to a question like "How does a car work?", would probably start with "A". So it returns to you "A".
 
-At this point, the LLM doesn't know what the rest of its answer is going to be, it just thinks that "A" is a good way to start<sup>1</sup>.
+At this point, the LLM doesn't know what the rest of its answer is going to be, it just thinks that "A" is a good way to start<sup>[2](#f2)</sup>.
 
 Then it is, again, given your question, but also its previous prediction, and it predicts the next-next word, which is "car". Then the next-next-next word, and so on.
 
 ---
 
-### So are LLMs thinking?
+### So are LLMs _thinking_?
 So now, think to yourself: are LLMs "thinking"? Who knows! What does thinking even mean? That answer probably lies in the realm of philosophy and consciousness. Perhaps a topic for another day.
 
 What _can_ be said, however, is that it's fascinating that a process so simple produces such intelligent behavior. Now, I am certainly dumbing LLMs down; no part of hiring hundreds of PhDs, building a massive data center, gathering all available human text, architecting a complex model with billions of parameters, and then training it should be referred to as "simple." But the thought that an LLM is merely predicting the next word is still mind-blowing.
 
 ---
 
-### Well, not just the _next word_
+### Well, not _just_ the next word
 
-I need to make a clarification: I've been saying "LLMs predict the next word". The LLM doesn't just tell you next word. It returns how likely it is that each word it knows is the next word in the sentence. Here is another visualization:
-
+I need to make a clarification: I've been saying "LLMs predict the next word". The LLM doesn't just tell you the next word. It returns how likely it is that each word it knows is the next word in the sentence. Here is another visualization:
 
 <video controls width="700" style={{ margin: "2rem 0" }}>
   <source src="/areel/videos/TokenProbabilityDistributionExample.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
+The LLM returns the __most__ likely next word, the __second__ most likely next word, the __third__ one, and so on. Think of it as a ranking. The LLM is saying: if I had to pick a next word in this sentence, here's the word that makes the __most__ sense; here's the one that makes the __second most__ sense; and so on. In technical terms, it's returning a probability distribution over all possible words in its vocabulary. We'll touch on vocabulary [here](#vocabulary).
 
-The LLM returns the __most__ likely next word, the __second__ most likely next word, the __third__ one, and so on. Think of it as a ranking. The LLM is saying: if I had to pick a next word in this sentence, here's the word that makes the __most__ sense; here's the one that makes the __second most__ sense; and so on. In technical terms, it's returning a probability distribution over all possible words in its vocabulary. We'll touch on vocabulary later.
+### Pick your poison (aka: Top-k)
+When the LLM responds with its ranking, you can choose which word to pick. If you always pick the most likely word (ranked 1<sup>st</sup>), you get (in a way) the most likely response to your question<sup>[3](#f3),[4](#f4)</sup>.
 
-
-#### Pick your poison (aka: Top-k)
-When the LLM responds with its ranking, you can always pick the first word in the ranking. Which is the most sensible one. If you do that, you get (in a way[2](#footnote-2)) the most likely response to your question.
-
-However, you could also pick one of the top 3 most likely words, or the top 5 (or top-k). If you pick the 3<sup>rd</sup> or 5<sup>th</sup> (or k<sup>th</sup>) most likely word, the response you'd get would be more and more unpredictable. And sometimes, unpredictability can look creative. Here is an example you can play with:
-
+However, you could pick one of the top 3, or top 5 (or top-k) words as well. The lower the rank of the words you pick, the more unpredictable the answer becomes. Here is an example you can play with:
 
 import TopKDemo from "@components/blog-assets/TopKDemo.astro";
 
 <TopKDemo />
 
-There's a point after which the response is just gibberish. And this makes sense! When the LLM returns its rankings for the most to least likley next word, if you always pick one of the less likely ones, you will end up with a "less likely" sentence.
+There's a point after which the response is just gibberish. And this makes sense! As the top-k increases, increasinlgy unlikely words get added to your sentence, making it more and more unpredictable. The probability of "dolphin" showing up in a sentence describing a sunset is low, but not zero. When you set top-k=20, it show happens to show up!
 
-The key is to find the balance for your use case. If you are writing a legal document, a very sensible and reliable response is best. So picking the most likely word (which is know as top-1) is a good choice. But if you are writing a poem, you'd benefit from more randomness (which can come off as creativity) so top-5 might be better.
+The key is to find the balance for your use case. If you are writing a legal document, a very sensible and reliable response is best. So picking the most likely word (which is known as top-1, or temperature of zero) is a good choice. But if you are writing a poem, you'd benefit from more randomness (which can come off as creativity) so top-5 might be better.
+
+This one little setting can significantly change the personality of the LLM! When you use ChatGPT, OpenAI picks this setting for you<sup>[5](#f5)</sup>.
 
 ---
 
-### Actually, not even _words_
+### Actually, not _even_ words
 
-Okay so, another confession, LLMs don't even predict the next word. LLMs do not konw what 
+An important confession: LLMs don't predict words. In fact, LLMs probably don't even know what words are. Instead LLMs predict _tokens_. Tokens are like pieces of words; think of them as syllables. I am introducing tokens now as opposed to earlier to keep explanations digestable.
 
-Also, LLMs don't actually predict the most likely word, but instead the most likely token. Tokens are like subwords; you can kind of think of them as syllables. So when you really think about it, LLMs are just predicting the most likely next 1–3-letter syllable. Crazy how they can look so intelligent for such a "simple" process. The reasons tokens are used instead of words are numerous. But I think the main reason is to reduce the size of the vocabulary the LLM has to learn. For the LLM to predict the next word, it has to know all the possible words in English, which is almost 200k words—that's a lot to remember. Whereas if you ask the LLM to predict the most likely next syllable, well, there's only about 10k syllables, and it only needs to know those.
+This is what it actually looks like:
+
+<video controls width="700" style={{ margin: "2rem 0" }}>
+  <source src="/areel/videos/TokensNotWords.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+When I first learned about tokens, I thought it was kind of stupid. Why would an LLM predict pieces of words instead of complete words? It seemed overcomplicated. But it turns out there are good reasons.
+
+To LLMs, there’s nothing special about words — they’re just letters strung together. Tokens are also just letters strung together, they just happen to be shorter. Humans have a special attachment to words because they carry meaning for us, while syllables don’t. But for an LLM, it’s all the same.
+
+So why did researchers choose to build LLMs to operate over tokens instead of whole words?
+
+A big reason is vocabulary<a id="vocabulary"></a>. Recall from earlier that LLMs predict the next word, but how does it even know what words it _can_ predict in the first place? Well, when the LLM is built, it is given a vocabulary. These are the set of words it can use. When it predicts, it ranks all the words in its vocabulary from most to least likely<sup>[6](#f6)</sup>.
+
+If we want LLMs to predict actual words, then the vocabulary must contain every possible word in English. That’s millions of entries, including rare monsters like "deoxyribonucleic". The LLM will have to rank how likely it is that "deoxyribonucleic" is the next word _every single_ time it makes a prediction. This is a huge waste of resources since "deoxyribonucleic" is rarely used.
+
+Instead, we can give it __pieces of words__, and it can combine these pieces to create whatever word it needs. Take "unbelievable" as an example. If we split it into chunks: "un", "be", "lie", "ve", "ab", "le", then we can contruct "believe", "believeable", "able", "unable", "be", "lie", and more for "free".
+
+Since it’s all the same for LLMs words and tokens are all the same to LLMs, its more efficient to use tokens <sup>[7](#f7)</sup>.
 
 
+### Footnotes
 
-1 - "it just thinks that "A" is a good way to start" is an ambiguous statement. I should refrain from using words like "think" or "know", because what do these words even mean in this context. If the LLM can give you a correct answer, did it "know" the answer? Does regujitating the most probable sequence of tokens count as "knowing"? These are philosophical question. I continue to use these words because they simplify layman explanation. I think being 20% less rigorous can make me 80% easier to understand (those numbers are fairly arbitrary). If I were fully pedantic, "it just thinks that "A" is a good way to start" should instead be: "it computes that the probability that the answer starts with "A" is higher than the probability of all other tokens, assuming top-k = 1". But this is not something my mom would understand, or care to understand.
+These are a slightly more technical. 
 
-<a id="footnote-1"></a> \* It is the system that sits between you and the LLM that handles the loop. Remember, the LLM literally only predicts the next word. It is not capable of taking the sentence and giving it back to itself in a loop. Hence, there needs to be a system that feeds the LLM the sentence again and again until the LLM says the sentence is complete.
+1. <a id="f1"></a> The system that sits between you and the LLM (for ChatGPT this would be the web application code that calls the LLM) handles the loop for passing the LLM's response back to itself. Remember, the only operation the LLM can perform is predict the next token. Hence, there needs to be a system that feeds the LLM the sentence again and again until the LLM says the sentence is complete. The same system is what adds the "Question:" and "Answer:" labels (which I am using as an analogy to System, Agent, User labels in agentic systems).
 
-<a id="footnote-2"></a> \*\* Not for the uninitiated: this depends on what you mean by "most likely response." If it is one where the product of the next predicted individual tokens is maximized (i.e., the product of P(next token = token you picked | previous tokens)), then yes, LLMs with temperature 0 return the most likely sentence. Kind of like a greedy algorithm: just pick the most likely right now. But if you look at it more dynamically, where it is possible that the most likely next token may actually lead you down a path where every token that follows has a very low probability, then the greedy LLM approach does not apply. This might be more akin to how humans think. We don't predict the next word in our sentence. We think of general ideas (i.e., entire sentences) at once, and then spit them out.
+2. <a id="f2"></a> "...it just thinks that "A" is a good way to start" is an ambiguous statement. I should refrain from using words like "think" or "know". What do these words even mean in this context. If the LLM can give you a correct answer, did it "know" the answer? Does regurgitating the most probable sequence of tokens count as "knowing"? These are philosophical questions. I continue to use these words because they simplify layman explanations. I think being 20% less rigorous can make me 80% easier to understand (those numbers are fairly arbitrary). If I were fully pedantic, "it just thinks that "A" is a good way to start" should instead be "It computes that the probability that the answer starts with "A" is higher than the probability of all other tokens, assuming top-k=1". You see how that's not something my mom would be interested in understanding?
 
+3. <a id="f3"></a> Not for the uninitiated: what you mean by "most likely response" depends. In this context I define it as the product of predicted tokens is maximized (i.e., the product of P(next token = token you picked | previous tokens)), then yes, LLMs with temperature 0 return the most likely sentence. Kind of like a greedy algorithm: just pick the most likely right now. But if you look at it more dynamically, where it is possible that the most likely next token may actually lead you down a path where every token that follows has a very low probability, then the greedy LLM approach does not apply. This might be more akin to how humans think. We don't predict the next word in our sentence. We think of general ideas (i.e., entire sentences) at once, and then spit them out.
 
-<a id="footnote-3"></a> \*\*\*. In fact, if my understanding is correct, this is the only source of randomness in the LLM. If you always picked the most likely word, you'd get the same response every time.
+4. <a id="f4"></a> If my understanding is correct, this is only source of randomness in the LLM. If you always picked the most likely word, you'd get the same response every time.
+
+5. <a id="f5"></a> Top-k is a very basic sampling approach. I bet OpenAI is doing something more complex under the hood. I think they may be setting the inference hyperparemeters (if you can call them that) at run time after seeing the first prompt to guide the LLM's personality to best serve the user's request.
+
+6. <a id="f6"></a> This ranking step isn't actually done by the LLM. The LLM simply outputs a vector of probabilities, the system around the LLM sorts it. Again, keeping explanations 20% less rigorous to be 80% more understandable. This is how I learn best.
+
+7. <a id="f7"></a> A good question at this point is: forget tokens, why not use the alphabet? Then we can create any word and the LLM only memorizes the alphabet. The problem with this is that the sequence to predict gets too long and since character level tokens encode very little information, the model performance drops. I should elaborate on this.
