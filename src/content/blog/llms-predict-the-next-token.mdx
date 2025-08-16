@@ -11,15 +11,20 @@ A few weeks ago, while sitting around a campfire (and being destroyed by mosquit
 
 I began contemplating whether what an LLM does could be called thinking. Although I would've loved to discuss that with my friends, they are not familiar with how an LLM works. And I certainly did not want to go off on a tangent about embeddings, self-attention, and autoregression.
 
-If I were, however, to try to explain to them what an LLM does, I'd go about it like this.
-
+If I were, however, to try to explain to them a bit about how an LLM generates responses, I'd go about it like this.
 
 ### Predicting the _next_ word
-LLMs (like ChatGPT) simply predict the __most likely next word__ in a sentence is. That's really it.
+LLMs (like ChatGPT) simply predict the __next word__ in a sentence is. That's really it.
 
 An example:
 
-Let's say you ask the LLM "how do cars work?".
+Let's say you ask the LLM `How does a car work?`. It will see this question, and predict what the __next word__ to follow that question would be. It's not "thinking" (whatever that means) about the answer. It has seen trillions of english texts during training, and so it knows, that the answer to a question like "How does a car work", would probably start with "A car...". So it predicts thw first word "A". This gets added to your sentence so then it sees your question, and the first word of the answer, and it predicts the next word
+
+<video controls width="700" style={{ margin: "2rem 0" }}>
+  <source src="/areel/videos/AutoRegressionExample.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
 
 So now, think to yourself: are LLMs "thinking"? Who knows! What does thinking even mean? That answer probably lies in the realm of philosophy and consciousness. Perhaps a topic for another day.
 
