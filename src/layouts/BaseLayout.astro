@@ -1,0 +1,62 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Areel Khan — Software Engineer' } = Astro.props;
+const currentPath = Astro.url.pathname;
+
+const navLinks = [
+  { href: '/blog', label: 'blog' },
+  { href: '/projects', label: 'projects' },
+  { href: '/resume', label: 'resume' },
+  { href: '/contact', label: 'contact' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen bg-terminal-bg text-terminal-text font-mono">
+    <nav class="border-b border-terminal-border">
+      <div class="mx-auto max-w-3xl px-4 py-4 flex items-center justify-between">
+        <a href="/" class="text-terminal-accent font-semibold hover:underline">~/areel</a>
+        <div class="flex gap-6 text-sm">
+          {navLinks.map(({ href, label }) => (
+            <a
+              href={href}
+              class:list={[
+                'transition-colors',
+                currentPath.startsWith(href)
+                  ? 'text-terminal-accent'
+                  : 'text-terminal-muted hover:text-terminal-text',
+              ]}
+            >
+              ./{label}
+            </a>
+          ))}
+        </div>
+      </div>
+    </nav>
+    <main class="mx-auto max-w-3xl px-4 py-8">
+      <slot />
+    </main>
+    <footer class="border-t border-terminal-border mt-16">
+      <div class="mx-auto max-w-3xl px-4 py-6 text-sm text-terminal-muted">
+        <span class="text-terminal-dim">&copy; {new Date().getFullYear()}</span> areel khan
+      </div>
+    </footer>
+  </body>
+</html>
