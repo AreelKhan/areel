@@ -1,0 +1,91 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { id: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+// Other blog posts (excluding current), newest first, up to 3
+const allPosts = await getCollection("blog");
+const otherPosts = allPosts
+  .filter((p) => p.id !== post.id)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
+
+const gridCols: Record<number, string> = {
+  1: "grid-cols-1",
+  2: "grid-cols-2",
+  3: "grid-cols-3",
+};
+---
+
+<Layout title={`${post.data.title} — Areel Khan`}>
+  <main class="max-w-5xl mx-auto px-6 pt-12 pb-16">
+    <!-- Header -->
+    <div class="mb-12">
+      <!-- Tags -->
+      <div class="flex gap-2 mb-6">
+        {post.data.tags.map((tag) => (
+          <span class="bg-[rgba(97,95,255,0.2)] border-2 border-[#615fff] rounded-full px-3 py-1 text-xs text-[#a3b3ff]">
+            {tag}
+          </span>
+        ))}
+      </div>
+
+      <!-- Title -->
+      <h1 class="font-serif text-5xl text-[#f1f5f9] mb-4">{post.data.title}</h1>
+
+      <!-- Meta -->
+      <div class="flex items-center gap-4 text-sm text-[#62748e] tracking-tight">
+        <span>{post.data.date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</span>
+        <span class="size-1 rounded-full bg-[#62748e]" />
+        <span>{post.data.readTime}</span>
+      </div>
+    </div>
+
+    <!-- Body content -->
+    <div class="prose prose-invert prose-lg max-w-none prose-headings:font-serif prose-headings:text-[#f1f5f9] prose-p:text-[#cad5e2] prose-p:leading-[30px] prose-p:tracking-tight prose-a:text-[#7c86ff] prose-strong:text-[#f1f5f9] prose-li:text-[#cad5e2] prose-code:text-[#dab2ff]">
+      <Content />
+    </div>
+
+    <!-- Other posts -->
+    {otherPosts.length > 0 && (
+      <div class="mt-20 border-t-4 border-[rgba(173,70,255,0.5)] pt-12">
+        <h2 class="font-serif text-3xl text-[#f1f5f9] mb-8">More Writing</h2>
+        <div class={`grid ${gridCols[otherPosts.length]} gap-8`}>
+          {otherPosts.map((p) => (
+            <a
+              href={`/blog/${p.id}`}
+              class="bg-[rgba(15,23,43,0.8)] rounded-[10px] border-4 border-[rgba(97,95,255,0.5)] shadow-[8px_8px_0px_0px_rgba(99,102,241,0.2)] p-9 flex flex-col gap-4 hover:border-[rgba(97,95,255,0.8)] transition-colors"
+            >
+              <div class="flex gap-2">
+                {p.data.tags.map((tag) => (
+                  <span class="bg-[rgba(97,95,255,0.2)] border-2 border-[#615fff] rounded-full px-3 py-1 text-xs text-[#a3b3ff]">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <h3 class="font-serif text-2xl text-[#f1f5f9]">{p.data.title}</h3>
+              <p class="text-base text-[#90a1b9] tracking-tight leading-[26px]">
+                {p.data.description}
+              </p>
+              <div class="flex items-center gap-4 text-sm text-[#62748e] tracking-tight">
+                <span>{p.data.date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</span>
+                <span class="size-1 rounded-full bg-[#62748e]" />
+                <span>{p.data.readTime}</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
+  </main>
+</Layout>
