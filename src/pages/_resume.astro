@@ -1,0 +1,261 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const experience = [
+    {
+    title: "Software Engineer",
+    company: "Fable Security",
+    location: "San Francisco",
+    date: "Apr 2025 – Present",
+    bullets: [],
+    tags: ["PySpark", "Django", "GraphQL", "React", "LangGraph"],
+  },
+  {
+    title: "Software Engineer Intern",
+    company: "Fable Security",
+    location: "San Francisco",
+    date: "Jan 2025 – Apr 2025",
+    bullets: [
+      "Migrated ETL from Pandas to PySpark + Avro, improving data quality and execution speed + memory usage by ~80x.",
+      "Worked with customers to define requirements for exposing raw security event data. Built pipelines in PySpark, a GraphQL API in Django, and a frontend in React.",
+      "Built a LangGraph ReAct agent that integrates into internal APIs to generate security training content. Shipped in 2 weeks.",
+      "Built a test env that mirrors prod on a schedule while anonymizing PII, cutting testing time and accelerating releases.",
+    ],
+    tags: ["PySpark", "Django", "GraphQL", "React", "LangGraph"],
+  },
+  {
+    title: "Software Engineer Intern",
+    company: "Trayd",
+    location: "New York",
+    date: "Sep 2024 – Dec 2024",
+    bullets: [
+      "Building an internal admin portal for customer success to manage all customer processes independently from engineering.",
+    ],
+    tags: ["Portal", "Internal Tools"],
+  },
+  {
+    title: "Lead Machine Learning Engineer",
+    company: "Health Canada",
+    location: "Toronto",
+    date: "Sep 2023 – Jan 2025",
+    bullets: [
+      "Led the development of a full-stack RAG chatbot in LangGraph, Postgres and Milvus.",
+      "Implemented LLM red-teaming and guardrails with Promptfoo, monitoring with Prometheus and Grafana, and deployment on Azure with K8s and Nginx.",
+    ],
+    tags: ["LangGraph", "Postgres", "Milvus", "K8s", "Azure", "Prometheus"],
+  },
+  {
+    title: "Software Engineer Intern",
+    company: "Replicant",
+    location: "Remote",
+    date: "May 2024 – Aug 2024",
+    bullets: [
+      "CTO and founder: \"You're the most impactful intern we've ever hired\". Nominated for intern of the year award.",
+      "Geo-sharded a critical Postgres DB and added data archiving, reducing query latency by 300% and storage cost by 70%.",
+      "Won Hackathon. Implemented an enterprise search tool now used by 90% of employees daily. Deployed on GCP with Helm.",
+      "Built a CI bot with Flask and webhooks to enforce security checks on 100% of PRs, improving QA and ISO compliance.",
+    ],
+    tags: ["Postgres", "GCP", "Helm", "Flask"],
+  },
+  {
+    title: "Software Engineer Intern",
+    company: "Hopper",
+    location: "Remote",
+    date: "May 2023 – Sep 2023",
+    bullets: [
+      "Introduced data quality testing in Airflow and alerting in Slack & PagerDuty, improving error detection rates by 5%.",
+      "Built a SQL model to predict the home country of users, enabling targeted marketing and preventing promotion scams.",
+    ],
+    tags: ["Airflow", "SQL", "PagerDuty"],
+  },
+  {
+    title: "Product Engineer",
+    company: "Bamboo Housing",
+    location: "Remote",
+    date: "Jun 2022 – Sep 2023",
+    bullets: [
+      "One of five founding members running Bamboo Housing, a fast-growing student housing startup with over 10k users.",
+      "Generated $15,000 revenue by developing web features in Node and React enabling users to boost postings for money.",
+    ],
+    tags: ["Node", "React", "Startup"],
+  },
+  {
+    title: "Analytics Engineer Intern",
+    company: "Super",
+    location: "Remote",
+    date: "Sep 2022 – Dec 2022",
+    bullets: [
+      "Built an ETL pipeline in Airflow and dbt to integrate payments into NetSuite, saving the finance team 100+ hrs per week.",
+      "Enhanced SQL testing by introducing CSV data fixtures, boosting coverage and enabling non-technical users to write tests.",
+    ],
+    tags: ["Airflow", "dbt", "SQL", "NetSuite"],
+  },
+  {
+    title: "Data Science Intern",
+    company: "TD Bank",
+    location: "Remote",
+    date: "Jan 2022 – Apr 2022",
+    bullets: [
+      "Reduced manual annotation load by 60% by training ML models on partially labeled data using Sklearn and Pandas.",
+      "Developed a text augmentation pipeline that doubles data size, resulting in up to 17% increases in model accuracy scores.",
+    ],
+    tags: ["Sklearn", "Pandas", "ML"],
+  },
+];
+
+const skills = [
+  { category: "Programming Languages", items: "Python, TypeScript, SQL, C/C++, R" },
+  { category: "Cloud", items: "AWS (S3, EC2, CloudWatch), GCP (CloudSQL, Spanner), Docker, K8s, Terraform, Helm, Prometheus, Grafana" },
+  { category: "Data Engineering", items: "Airflow, dbt, Spark, BigQuery, Snowflake, Spanner, Dask, PyTorch Dataloaders" },
+  { category: "AI & ML", items: "PyTorch, TensorFlow, DVC, Weights & Biases, LangChain, LangGraph, MilvusDB, ChromaDB" },
+  { category: "Web / Other", items: "Django, FastAPI, Node, Next, React, ChakraUI, GraphQL, PostgreSQL, MongoDB, Celery, Redis" },
+];
+
+const hackathons = [
+  {
+    name: "ClimateHack.ai",
+    result: "1st Place",
+    description: "Trained the most accurate PV prediction model in the world using 600 GB of data.",
+  },
+  {
+    name: "Wildfire Hackathon",
+    result: "1st Place",
+    description: "Trained a CNN to predict wildfire spread on a very messy dataset in 4 hours.",
+  },
+  {
+    name: "Cohere RAG Hackathon",
+    result: "1st Place",
+    description: "Built a medical RAG pipeline with tool calling to medical vision models.",
+  },
+];
+---
+
+<Layout title="Resume — Areel Khan">
+  <main class="max-w-5xl mx-auto px-6 pt-12 pb-16">
+
+    <!-- Education -->
+    <div class="flex items-center gap-3 mb-8">
+      <span class="font-serif text-5xl text-[#7c86ff]">✦</span>
+      <h1 class="font-serif text-5xl text-[#f1f5f9]">Education</h1>
+    </div>
+
+    <div class="bg-[rgba(15,23,43,0.8)] rounded-[10px] border-4 border-[#615fff] shadow-[8px_8px_0px_0px_rgba(99,102,241,0.3)] p-9">
+      <div class="flex items-start justify-between">
+        <div>
+          <h3 class="font-serif text-2xl text-[#f1f5f9]">Bachelor of Mathematics – Statistics</h3>
+          <p class="text-[#90a1b9] text-base tracking-tight mt-1">University of Waterloo</p>
+        </div>
+        <div class="text-right shrink-0 ml-8">
+          <p class="text-[#cad5e2] text-base tracking-tight">Aug 2025</p>
+          <p class="text-[#90a1b9] text-base tracking-tight mt-1">3.8 / 4.0 GPA</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Experience -->
+    <div class="flex items-center gap-3 mt-16 mb-8">
+      <span class="font-serif text-5xl text-[#7c86ff]">✦</span>
+      <h2 class="font-serif text-5xl text-[#f1f5f9]">Experience</h2>
+    </div>
+
+    <div class="flex flex-col gap-8">
+      {experience.map((job) => (
+        <div class="bg-[rgba(15,23,43,0.8)] rounded-[10px] border-4 border-[rgba(97,95,255,0.5)] shadow-[8px_8px_0px_0px_rgba(99,102,241,0.2)] p-9">
+          <!-- Header row -->
+          <div class="flex items-start justify-between mb-1">
+            <h3 class="font-serif text-2xl text-[#f1f5f9]">{job.title}</h3>
+            <span class="text-[#cad5e2] text-base tracking-tight shrink-0 ml-8">{job.date}</span>
+          </div>
+          <div class="flex items-start justify-between mb-6">
+            <p class="text-[#90a1b9] text-base tracking-tight">{job.company}</p>
+            <span class="text-[#90a1b9] text-base tracking-tight shrink-0 ml-8">{job.location}</span>
+          </div>
+
+          <!-- Bullets -->
+          <ul class="flex flex-col gap-3 mb-6">
+            {job.bullets.map((bullet) => (
+              <li class="text-[#cad5e2] text-base leading-[26px] tracking-tight pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:size-1.5 before:rounded-full before:bg-[#7c86ff]">
+                {bullet}
+              </li>
+            ))}
+          </ul>
+
+          <!-- Tags -->
+          <div class="flex flex-wrap gap-2">
+            {job.tags.map((tag) => (
+              <span class="bg-[rgba(97,95,255,0.2)] border-2 border-[#615fff] rounded-full px-3 py-1 text-xs text-[#a3b3ff]">
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Technical Skills -->
+    <div class="flex items-center gap-3 mt-16 mb-8">
+      <span class="font-serif text-5xl text-[#7c86ff]">✦</span>
+      <h2 class="font-serif text-5xl text-[#f1f5f9]">Technical Skills</h2>
+    </div>
+
+    <div class="bg-[rgba(15,23,43,0.8)] rounded-[10px] border-4 border-[#615fff] shadow-[8px_8px_0px_0px_rgba(99,102,241,0.3)] p-9 flex flex-col gap-5">
+      {skills.map((skill) => (
+        <div>
+          <span class="text-[#f1f5f9] font-medium text-base">{skill.category}: </span>
+          <span class="text-[#cad5e2] text-base leading-[26px] tracking-tight">{skill.items}</span>
+        </div>
+      ))}
+    </div>
+
+    <!-- Leadership -->
+    <div class="flex items-center gap-3 mt-16 mb-8">
+      <span class="font-serif text-5xl text-[#7c86ff]">✦</span>
+      <h2 class="font-serif text-5xl text-[#f1f5f9]">Leadership</h2>
+    </div>
+
+    <div class="bg-[rgba(15,23,43,0.8)] rounded-[10px] border-4 border-[rgba(97,95,255,0.5)] shadow-[8px_8px_0px_0px_rgba(99,102,241,0.2)] p-9">
+      <div class="flex items-start justify-between mb-1">
+        <h3 class="font-serif text-2xl text-[#f1f5f9]">Director of Technology & Lead Engineer</h3>
+        <span class="text-[#cad5e2] text-base tracking-tight shrink-0 ml-8">Aug 2022 – Aug 2024</span>
+      </div>
+      <div class="flex items-start justify-between mb-6">
+        <p class="text-[#90a1b9] text-base tracking-tight">WAT.ai</p>
+        <span class="text-[#90a1b9] text-base tracking-tight shrink-0 ml-8">Waterloo</span>
+      </div>
+      <ul class="flex flex-col gap-3 mb-6">
+        <li class="text-[#cad5e2] text-base leading-[26px] tracking-tight pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:size-1.5 before:rounded-full before:bg-[#7c86ff]">
+          Slashed cloud bill in half by caching with Redis and multiprocessing to 20x data pipeline speed and reduced ingress by 90%.
+        </li>
+        <li class="text-[#cad5e2] text-base leading-[26px] tracking-tight pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[10px] before:size-1.5 before:rounded-full before:bg-[#7c86ff]">
+          Building ML infra on a GPU cluster with Slurm, Docker, WandB and DVC enabling 500+ students to train models easily.
+        </li>
+      </ul>
+      <div class="flex flex-wrap gap-2">
+        <span class="bg-[rgba(97,95,255,0.2)] border-2 border-[#615fff] rounded-full px-3 py-1 text-xs text-[#a3b3ff]">Redis</span>
+        <span class="bg-[rgba(97,95,255,0.2)] border-2 border-[#615fff] rounded-full px-3 py-1 text-xs text-[#a3b3ff]">Slurm</span>
+        <span class="bg-[rgba(97,95,255,0.2)] border-2 border-[#615fff] rounded-full px-3 py-1 text-xs text-[#a3b3ff]">Docker</span>
+        <span class="bg-[rgba(97,95,255,0.2)] border-2 border-[#615fff] rounded-full px-3 py-1 text-xs text-[#a3b3ff]">WandB</span>
+        <span class="bg-[rgba(97,95,255,0.2)] border-2 border-[#615fff] rounded-full px-3 py-1 text-xs text-[#a3b3ff]">DVC</span>
+      </div>
+    </div>
+
+    <!-- Hackathons -->
+    <div class="flex items-center gap-3 mt-16 mb-8">
+      <span class="font-serif text-5xl text-[#7c86ff]">✦</span>
+      <h2 class="font-serif text-5xl text-[#f1f5f9]">Hackathons</h2>
+    </div>
+
+    <div class="bg-[rgba(15,23,43,0.8)] rounded-[10px] border-4 border-[#ad46ff] shadow-[8px_8px_0px_0px_rgba(168,85,247,0.3)] p-9 flex flex-col gap-6">
+      {hackathons.map((hack) => (
+        <div class="flex items-start gap-4">
+          <span class="bg-[rgba(173,70,255,0.2)] border-2 border-[#ad46ff] rounded-full px-3 py-1 text-xs text-[#dab2ff] shrink-0">{hack.result}</span>
+          <div>
+            <h3 class="font-serif text-xl text-[#f1f5f9]">{hack.name}</h3>
+            <p class="text-[#cad5e2] text-base leading-[26px] tracking-tight mt-1">{hack.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+  </main>
+</Layout>

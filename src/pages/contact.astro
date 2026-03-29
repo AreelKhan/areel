@@ -1,0 +1,67 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const links = [
+  {
+    label: "Email",
+    href: "mailto:areel.khan.career@gmail.com",
+    display: "areel.khan.career@gmail.com",
+    icon: `<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`,
+  },
+  {
+    label: "GitHub",
+    href: "https://github.com/AreelKhan",
+    display: "AreelKhan",
+    icon: `<path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.866-.013-1.7-2.782.604-3.369-1.341-3.369-1.341-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z" fill="currentColor"/>`,
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/areel-khan/",
+    display: "areel-khan",
+    icon: `<path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><rect x="2" y="9" width="4" height="12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="4" cy="4" r="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`,
+  },
+  {
+    label: "X",
+    href: "https://x.com/GomTron",
+    display: "@GomTron",
+    icon: `<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="currentColor"/>`,
+  },
+];
+---
+
+<Layout title="Contact — Areel Khan">
+  <main class="max-w-5xl mx-auto px-6 pt-12 pb-16">
+    <!-- Page heading -->
+    <div class="flex items-center gap-3 mb-4">
+      <span class="font-serif text-5xl text-[#7c86ff]">✦</span>
+      <h1 class="font-serif text-5xl text-[#f1f5f9]">Contact</h1>
+    </div>
+
+    <p class="text-lg text-[#90a1b9] tracking-tight leading-[30px] mb-12">
+      Want to chat? Reach out through any of the channels below.
+    </p>
+
+    <!-- Contact links -->
+    <div class="flex flex-col gap-6">
+      {links.map((link) => (
+        <a
+          href={link.href}
+          target={link.href.startsWith("mailto") ? undefined : "_blank"}
+          rel={link.href.startsWith("mailto") ? undefined : "noopener noreferrer"}
+          class="bg-[rgba(15,23,43,0.8)] rounded-[10px] border-4 border-[rgba(97,95,255,0.5)] shadow-[8px_8px_0px_0px_rgba(99,102,241,0.2)] p-9 flex items-center gap-6 hover:border-[rgba(97,95,255,0.8)] transition-colors"
+        >
+          <div
+            class="shrink-0 size-12 rounded-[4px] border-2 border-[#7c86ff] shadow-[3px_3px_0px_0px_rgba(99,102,241,0.5)] flex items-center justify-center text-[#f1f5f9]"
+            style="background-image: linear-gradient(135deg, #615fff 0%, #155dfc 100%);"
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" set:html={link.icon} />
+          </div>
+          <div>
+            <h3 class="font-serif text-2xl text-[#f1f5f9]">{link.label}</h3>
+            <p class="text-[#90a1b9] text-base tracking-tight mt-1">{link.display}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </main>
+</Layout>
