@@ -1,0 +1,61 @@
+---
+import { getCollection } from "astro:content";
+
+const allPosts = await getCollection("blog");
+const posts = allPosts
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
+---
+
+<section class="max-w-5xl mx-auto px-6 pt-16">
+  <!-- Header row -->
+  <div class="flex items-end justify-between mb-12">
+    <div>
+      <div class="flex items-center gap-3">
+        <span class="font-serif text-5xl text-[#7c86ff]">✦</span>
+        <h2 class="font-serif text-5xl text-[#f1f5f9]">Recent Writing</h2>
+      </div>
+    </div>
+    <a
+      href="/blog"
+      class="px-6 py-2.5 rounded-[4px] border-2 border-[#c27aff] shadow-[4px_4px_0px_0px_rgba(168,85,247,0.5)] text-[#f8fafc] text-base tracking-tight hover:brightness-110 transition"
+      style="background-image: linear-gradient(90deg, #9810fa 0%, #4f39f6 100%);"
+    >
+      View all →
+    </a>
+  </div>
+
+  <!-- Blog post cards -->
+  <div class="flex flex-col gap-8">
+    {posts.map((post) => (
+      <a
+        href={`/blog/${post.id}`}
+        class="bg-[rgba(15,23,43,0.8)] rounded-[10px] border-4 border-[rgba(97,95,255,0.5)] shadow-[8px_8px_0px_0px_rgba(99,102,241,0.2)] p-9 flex flex-col gap-4 hover:border-[rgba(97,95,255,0.8)] transition-colors"
+      >
+        <!-- Tags -->
+        <div class="flex gap-2">
+          {post.data.tags.map((tag) => (
+            <span class="bg-[rgba(97,95,255,0.2)] border-2 border-[#615fff] rounded-full px-3 py-1 text-xs text-[#a3b3ff]">
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        <!-- Title -->
+        <h3 class="font-serif text-2xl text-[#f1f5f9]">{post.data.title}</h3>
+
+        <!-- Description -->
+        <p class="text-base text-[#90a1b9] tracking-tight leading-[26px]">
+          {post.data.description}
+        </p>
+
+        <!-- Meta -->
+        <div class="flex items-center gap-4 text-sm text-[#62748e] tracking-tight">
+          <span>{post.data.date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</span>
+          <span class="size-1 rounded-full bg-[#62748e]" />
+          <span>{post.data.readTime}</span>
+        </div>
+      </a>
+    ))}
+  </div>
+</section>

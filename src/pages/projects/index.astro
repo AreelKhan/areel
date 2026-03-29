@@ -1,0 +1,73 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+const allProjects = await getCollection("projects");
+
+const colorMap = {
+  purple: {
+    border: "border-[#ad46ff]",
+    shadow: "shadow-[8px_8px_0px_0px_rgba(168,85,247,0.3)]",
+    iconBorder: "border-[#c27aff]",
+    iconShadow: "shadow-[3px_3px_0px_0px_rgba(168,85,247,0.5)]",
+    iconGradient: "background-image: linear-gradient(135deg, #ad46ff 0%, #e60076 100%);",
+    tagBg: "bg-[rgba(173,70,255,0.2)]",
+    tagBorder: "border-[#ad46ff]",
+    tagText: "text-[#dab2ff]",
+  },
+  indigo: {
+    border: "border-[#615fff]",
+    shadow: "shadow-[8px_8px_0px_0px_rgba(99,102,241,0.3)]",
+    iconBorder: "border-[#7c86ff]",
+    iconShadow: "shadow-[3px_3px_0px_0px_rgba(99,102,241,0.5)]",
+    iconGradient: "background-image: linear-gradient(135deg, #615fff 0%, #155dfc 100%);",
+    tagBg: "bg-[rgba(97,95,255,0.2)]",
+    tagBorder: "border-[#615fff]",
+    tagText: "text-[#a3b3ff]",
+  },
+} as const;
+---
+
+<Layout title="Projects — Areel Khan">
+  <main class="max-w-5xl mx-auto px-6 pt-12 pb-16">
+    <!-- Page heading -->
+    <div class="flex items-center gap-3 mb-12">
+      <span class="font-serif text-5xl text-[#7c86ff]">✦</span>
+      <h1 class="font-serif text-5xl text-[#f1f5f9]">Projects</h1>
+    </div>
+
+    <!-- Project cards -->
+    <div class="flex flex-col gap-8">
+      {allProjects.map((project) => {
+        const c = colorMap[project.data.color];
+        return (
+          <a href={`/projects/${project.id}`} class={`bg-[rgba(15,23,43,0.8)] rounded-[10px] border-4 ${c.border} ${c.shadow} p-9 flex flex-col gap-4 hover:brightness-110 transition`}>
+            <div class="flex items-start justify-between">
+              <h3 class="font-serif text-2xl text-[#f1f5f9]">{project.data.title}</h3>
+              <div
+                class={`shrink-0 size-10 rounded-[4px] border-2 ${c.iconBorder} ${c.iconShadow} flex items-center justify-center`}
+                style={c.iconGradient}
+              >
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8.281 12.917C8.206 12.628 8.056 12.365 7.846 12.155C7.635 11.944 7.372 11.794 7.083 11.719L1.971 10.401C1.884 10.376 1.807 10.324 1.752 10.251C1.698 10.179 1.668 10.091 1.668 10C1.668 9.909 1.698 9.821 1.752 9.749C1.807 9.676 1.884 9.624 1.971 9.599L7.083 8.28C7.372 8.206 7.635 8.055 7.845 7.845C8.056 7.635 8.206 7.372 8.281 7.083L9.599 1.971C9.624 1.883 9.676 1.806 9.749 1.751C9.821 1.696 9.909 1.666 10 1.666C10.091 1.666 10.18 1.696 10.252 1.751C10.325 1.806 10.377 1.883 10.402 1.971L11.719 7.083C11.794 7.372 11.944 7.635 12.155 7.846C12.365 8.056 12.628 8.206 12.917 8.281L18.029 9.598C18.117 9.623 18.195 9.675 18.25 9.748C18.305 9.82 18.335 9.909 18.335 10C18.335 10.091 18.305 10.18 18.25 10.252C18.195 10.325 18.117 10.377 18.029 10.402L12.917 11.719C12.628 11.794 12.365 11.944 12.155 12.155C11.944 12.365 11.794 12.628 11.719 12.917L10.401 18.029C10.376 18.117 10.324 18.194 10.251 18.249C10.179 18.304 10.091 18.334 10 18.334C9.909 18.334 9.82 18.304 9.748 18.249C9.675 18.194 9.623 18.117 9.598 18.029L8.281 12.917Z" stroke="#F1F5F9" stroke-width="1.667" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M16.667 2.5V5.833" stroke="#F1F5F9" stroke-width="1.667" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M18.333 4.167H15" stroke="#F1F5F9" stroke-width="1.667" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+            <p class="text-[#cad5e2] text-base leading-[26px] tracking-tight">
+              {project.data.description}
+            </p>
+            <div class="flex gap-2">
+              {project.data.tags.map((tag) => (
+                <span class={`${c.tagBg} border-2 ${c.tagBorder} rounded-full px-3 py-1 text-xs ${c.tagText}`}>
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </a>
+        );
+      })}
+    </div>
+  </main>
+</Layout>

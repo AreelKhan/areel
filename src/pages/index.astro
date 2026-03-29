@@ -1,10 +1,16 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import AboutMe from '../components/AboutMe.astro';
+import CurrentProjects from '../components/CurrentProjects.astro';
+import RecentWriting from '../components/RecentWriting.astro';
 ---
 
 <Layout title="Areel Khan">
-  <main class="max-w-3xl mx-auto px-6 py-12">
-    <h1 class="text-4xl font-bold">Areel Khan</h1>
-    <p class="mt-4 text-gray-400">Portfolio coming soon.</p>
+  <main>
+    <Hero />
+    <AboutMe />
+    <CurrentProjects />
+    <RecentWriting />
   </main>
 </Layout>

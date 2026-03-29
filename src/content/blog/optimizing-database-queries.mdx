@@ -1,0 +1,18 @@
+---
+title: "Optimizing Database Queries at Scale"
+description: "A deep-dive into query optimization techniques that reduced our DB latency by 80%."
+date: 2026-02-28
+tags: ["Database", "Performance"]
+readTime: "10 min read"
+featured: true
+---
+
+At Fable, our main analytics pipeline was hitting a wall. Query times were creeping past 2 seconds, and our users were starting to notice. Here's how we brought that down to under 400ms.
+
+## Identifying the Bottleneck
+
+The first step was adding proper instrumentation. We tagged every query with its origin and started tracking P50, P95, and P99 latencies. The results were eye-opening — 80% of our latency came from just three query patterns.
+
+## The Fix
+
+A combination of composite indexes, query rewriting, and strategic denormalization got us where we needed to be. The key insight was that our most expensive joins were between tables that rarely changed together.
