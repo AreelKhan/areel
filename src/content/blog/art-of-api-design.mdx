@@ -1,0 +1,18 @@
+---
+title: "The Art of API Design"
+description: "Lessons learned from designing developer-friendly APIs that stand the test of time."
+date: 2026-03-12
+tags: ["Design", "Engineering"]
+readTime: "6 min read"
+featured: true
+---
+
+Good API design is invisible. The best APIs feel like they were always there — obvious, intuitive, and hard to misuse. After years of building and consuming APIs, here are the principles I keep coming back to.
+
+## Consistency Over Cleverness
+
+Every endpoint should feel like it belongs to the same family. If you paginate one list endpoint with `limit` and `offset`, every list endpoint should work the same way.
+
+## Error Messages Are UI
+
+Your error responses are a user interface for developers. A good error message tells you what went wrong, why, and how to fix it.

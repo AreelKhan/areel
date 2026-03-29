@@ -1,0 +1,18 @@
+---
+title: "Building a Distributed Task Queue in Rust"
+description: "Exploring the design patterns and trade-offs when implementing a high-performance task queue from scratch."
+date: 2026-03-15
+tags: ["Rust", "Systems"]
+readTime: "8 min read"
+featured: true
+---
+
+When I set out to build a distributed task queue, I knew Rust was the right choice. The combination of zero-cost abstractions and fearless concurrency made it ideal for a system that needs to handle millions of tasks per second.
+
+## The Architecture
+
+At its core, the system uses a combination of Redis for task storage and gRPC for inter-node communication. Workers pull tasks from the queue, execute them, and report results back through a dedicated channel.
+
+## Lessons Learned
+
+The hardest part wasn't the distributed systems theory — it was getting the error handling right. Rust's type system forced me to think about every failure mode upfront, which ultimately made the system more reliable.

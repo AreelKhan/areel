@@ -1,30 +1,10 @@
 ---
-const posts = [
-  {
-    title: "Building a Distributed Task Queue in Rust",
-    description: "Exploring the design patterns and trade-offs when implementing a high-performance task queue from scratch.",
-    tags: ["Rust", "Systems"],
-    date: "March 15, 2026",
-    readTime: "8 min read",
-    slug: "distributed-task-queue-rust",
-  },
-  {
-    title: "The Art of API Design",
-    description: "Lessons learned from designing developer-friendly APIs that stand the test of time.",
-    tags: ["Design", "Engineering"],
-    date: "March 12, 2026",
-    readTime: "6 min read",
-    slug: "art-of-api-design",
-  },
-  {
-    title: "Optimizing Database Queries at Scale",
-    description: "A deep-dive into query optimization techniques that reduced our DB latency by 80%.",
-    tags: ["Database", "Performance"],
-    date: "February 28, 2026",
-    readTime: "10 min read",
-    slug: "optimizing-database-queries",
-  },
-];
+import { getCollection } from "astro:content";
+
+const allPosts = await getCollection("blog");
+const posts = allPosts
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
 ---
 
 <section class="max-w-5xl mx-auto px-6 pt-16">
@@ -49,12 +29,12 @@ const posts = [
   <div class="flex flex-col gap-8">
     {posts.map((post) => (
       <a
-        href={`/blog/${post.slug}`}
+        href={`/blog/${post.id}`}
         class="bg-[rgba(15,23,43,0.8)] rounded-[10px] border-4 border-[rgba(97,95,255,0.5)] shadow-[8px_8px_0px_0px_rgba(99,102,241,0.2)] p-9 flex flex-col gap-4 hover:border-[rgba(97,95,255,0.8)] transition-colors"
       >
         <!-- Tags -->
         <div class="flex gap-2">
-          {post.tags.map((tag) => (
+          {post.data.tags.map((tag) => (
             <span class="bg-[rgba(97,95,255,0.2)] border-2 border-[#615fff] rounded-full px-3 py-1 text-xs text-[#a3b3ff]">
               {tag}
             </span>
@@ -62,18 +42,18 @@ const posts = [
         </div>
 
         <!-- Title -->
-        <h3 class="font-serif text-2xl text-[#f1f5f9]">{post.title}</h3>
+        <h3 class="font-serif text-2xl text-[#f1f5f9]">{post.data.title}</h3>
 
         <!-- Description -->
         <p class="text-base text-[#90a1b9] tracking-tight leading-[26px]">
-          {post.description}
+          {post.data.description}
         </p>
 
         <!-- Meta -->
         <div class="flex items-center gap-4 text-sm text-[#62748e] tracking-tight">
-          <span>{post.date}</span>
+          <span>{post.data.date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</span>
           <span class="size-1 rounded-full bg-[#62748e]" />
-          <span>{post.readTime}</span>
+          <span>{post.data.readTime}</span>
         </div>
       </a>
     ))}
