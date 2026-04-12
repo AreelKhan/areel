@@ -5,7 +5,7 @@
 - [x] Rename "blog" to "writings/posts" across the site
 
 ## Projects
-- [ ] Add project: wt (work tree management tool)
+- [x] Add project: wt (work tree management tool)
 - [ ] Add project: simlink (second brain)
 - [ ] Add project: Climate Hack (hackathon)
 - [ ] Add project: One Med Chat (hackathon)
