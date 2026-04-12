@@ -1,7 +1,7 @@
 # Website TODO
 
 ## Setup
-- [ ] Remove placeholder content (fake projects & posts)
+- [x] Remove placeholder content (fake projects & posts)
 - [x] Rename "blog" to "writings/posts" across the site
 
 ## Projects

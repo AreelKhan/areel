@@ -5,35 +5,37 @@ const allProjects = await getCollection("projects");
 const projects = allProjects.filter((p) => p.data.featured);
 
 const colorMap = {
-  purple: {
-    border: "border-[#ad46ff]",
-    shadow: "shadow-[8px_8px_0px_0px_rgba(168,85,247,0.3)]",
-    iconBorder: "border-[#c27aff]",
-    iconShadow: "shadow-[3px_3px_0px_0px_rgba(168,85,247,0.5)]",
-    iconGradient: "background-image: linear-gradient(135deg, #ad46ff 0%, #e60076 100%);",
-    tagBg: "bg-[rgba(173,70,255,0.2)]",
-    tagBorder: "border-[#ad46ff]",
-    tagText: "text-[#dab2ff]",
-  },
-  indigo: {
-    border: "border-[#615fff]",
-    shadow: "shadow-[8px_8px_0px_0px_rgba(99,102,241,0.3)]",
-    iconBorder: "border-[#7c86ff]",
-    iconShadow: "shadow-[3px_3px_0px_0px_rgba(99,102,241,0.5)]",
-    iconGradient: "background-image: linear-gradient(135deg, #615fff 0%, #155dfc 100%);",
-    tagBg: "bg-[rgba(97,95,255,0.2)]",
-    tagBorder: "border-[#615fff]",
-    tagText: "text-[#a3b3ff]",
-  },
+	purple: {
+		border: "border-[#ad46ff]",
+		shadow: "shadow-[8px_8px_0px_0px_rgba(168,85,247,0.3)]",
+		iconBorder: "border-[#c27aff]",
+		iconShadow: "shadow-[3px_3px_0px_0px_rgba(168,85,247,0.5)]",
+		iconGradient:
+			"background-image: linear-gradient(135deg, #ad46ff 0%, #e60076 100%);",
+		tagBg: "bg-[rgba(173,70,255,0.2)]",
+		tagBorder: "border-[#ad46ff]",
+		tagText: "text-[#dab2ff]",
+	},
+	indigo: {
+		border: "border-[#615fff]",
+		shadow: "shadow-[8px_8px_0px_0px_rgba(99,102,241,0.3)]",
+		iconBorder: "border-[#7c86ff]",
+		iconShadow: "shadow-[3px_3px_0px_0px_rgba(99,102,241,0.5)]",
+		iconGradient:
+			"background-image: linear-gradient(135deg, #615fff 0%, #155dfc 100%);",
+		tagBg: "bg-[rgba(97,95,255,0.2)]",
+		tagBorder: "border-[#615fff]",
+		tagText: "text-[#a3b3ff]",
+	},
 } as const;
 ---
 
 <section class="max-w-5xl mx-auto px-6 py-16 border-t-4 border-b-4 border-[rgba(173,70,255,0.5)] mt-16">
   <!-- Section heading -->
-  <div class="flex items-end justify-between mb-10">
+  <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
     <div class="flex items-center gap-3">
-      <span class="font-serif text-5xl text-[#7c86ff]">✦</span>
-      <h2 class="font-serif text-5xl text-[#f1f5f9]">Current Projects</h2>
+      <span class="font-serif text-3xl sm:text-5xl text-[#7c86ff]">✦</span>
+      <h2 class="font-serif text-3xl sm:text-5xl text-[#f1f5f9]">Current Projects</h2>
     </div>
     <a
       href="/projects"
@@ -45,7 +47,7 @@ const colorMap = {
   </div>
 
   <!-- Project cards -->
-  <div class="grid grid-cols-2 gap-8">
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
     {projects.map((project) => {
       const c = colorMap[project.data.color];
       return (
