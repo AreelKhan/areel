@@ -1,29 +1,29 @@
 ---
-import Layout from "../../layouts/Layout.astro";
 import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog");
-  return posts.map((post) => ({
-    params: { id: post.id },
-    props: { post },
-  }));
+	const posts = await getCollection("writings");
+	return posts.map((post) => ({
+		params: { id: post.id },
+		props: { post },
+	}));
 }
 
 const { post } = Astro.props;
 const { Content } = await render(post);
 
-// Other blog posts (excluding current), newest first, up to 3
-const allPosts = await getCollection("blog");
+// Other posts (excluding current), newest first, up to 3
+const allPosts = await getCollection("writings");
 const otherPosts = allPosts
-  .filter((p) => p.id !== post.id)
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .slice(0, 3);
+	.filter((p) => p.id !== post.id)
+	.sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+	.slice(0, 3);
 
 const gridCols: Record<number, string> = {
-  1: "grid-cols-1",
-  2: "grid-cols-2",
-  3: "grid-cols-3",
+	1: "grid-cols-1",
+	2: "grid-cols-2",
+	3: "grid-cols-3",
 };
 ---
 
@@ -63,7 +63,7 @@ const gridCols: Record<number, string> = {
         <div class={`grid ${gridCols[otherPosts.length]} gap-8`}>
           {otherPosts.map((p) => (
             <a
-              href={`/blog/${p.id}`}
+              href={`/writings/${p.id}`}
               class="bg-[rgba(15,23,43,0.8)] rounded-[10px] border-4 border-[rgba(97,95,255,0.5)] shadow-[8px_8px_0px_0px_rgba(99,102,241,0.2)] p-9 flex flex-col gap-4 hover:border-[rgba(97,95,255,0.8)] transition-colors"
             >
               <div class="flex gap-2">
