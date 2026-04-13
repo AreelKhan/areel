@@ -10,6 +10,7 @@ const writings = defineCollection({
 		tags: z.array(z.string()),
 		readTime: z.string(),
 		featured: z.boolean().default(false),
+		relatedWritings: z.array(z.string()).optional(),
 		project: z.string().optional(),
 	}),
 });

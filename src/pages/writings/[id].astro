@@ -13,12 +13,15 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 
-// Other posts (excluding current), newest first, up to 3
+// Related or recent posts, up to 3
 const allPosts = await getCollection("writings");
-const otherPosts = allPosts
-	.filter((p) => p.id !== post.id)
-	.sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-	.slice(0, 3);
+const related = post.data.relatedWritings;
+const otherPosts = related?.length
+	? allPosts.filter((p) => related.includes(p.id))
+	: allPosts
+			.filter((p) => p.id !== post.id)
+			.sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+			.slice(0, 3);
 
 const gridCols: Record<number, string> = {
 	1: "grid-cols-1",
@@ -59,7 +62,7 @@ const gridCols: Record<number, string> = {
     <!-- Other posts -->
     {otherPosts.length > 0 && (
       <div class="mt-20 border-t-4 border-[rgba(173,70,255,0.5)] pt-12">
-        <h2 class="font-serif text-3xl text-[#f1f5f9] mb-8">More Writing</h2>
+        <h2 class="font-serif text-3xl text-[#f1f5f9] mb-8">{related?.length ? "Related Writing" : "More Writing"}</h2>
         <div class={`grid ${gridCols[otherPosts.length]} gap-8`}>
           {otherPosts.map((p) => (
             <a
