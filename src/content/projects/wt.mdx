@@ -1,7 +1,7 @@
 ---
 title: "wt"
 description: "A CLI I built to manage git worktrees. It lets me spin up isolated copies of my repo so I can context-switch without stashing, committing, or rebuilding anything."
-tags: ["Bash", "Git", "CLI"]
+tags: ["devex", "git", "cli"]
 featured: true
 color: "indigo"
 github: "https://github.com/AreelKhan/wt"
@@ -9,7 +9,8 @@ github: "https://github.com/AreelKhan/wt"
 
 ## Why I built this
 
-I'm always in the middle of working on some feature. That's just the default state. And then something small comes up — a five-line hotfix, a quick repro on main, someone asking me to check something on their branch. The actual task takes three minutes, but the context-switch around it is brutal:
+
+One of my biggest current pet peeves is that I'll be in the middle of working on something and then something small comes up, like a five-line hotfix, a quick repro on main, or someone pinging me to check their branch. The actual task takes three minutes. The context-switch around it is brutal:
 
 1. Stash or commit my in-progress work
 2. Check out a new branch
@@ -18,25 +19,27 @@ I'm always in the middle of working on some feature. That's just the default sta
 5. Commit and push
 6. Switch back to my branch
 7. Unstash or undo that throwaway commit
-8. Rebuild and serve again
+8. Rebuild and serve _again_
 
-By the time I'm back to where I started, twenty minutes have gone by and I've completely lost my train of thought.
+By the time I'm back to where I started, twenty minutes have gone by and I've forgotten what I was doing.
 
-Git worktrees solve this — they let you have multiple working copies of the same repo checked out at the same time. But the built-in `git worktree` commands are verbose and don't handle the stuff around it, like branch naming conventions, quick navigation, or cleanup.
+Git worktrees fix this. They let you have multiple checkouts of the same repo at the same time, each on its own branch, each in its own directory. No stashing, no branch-switching, no rebuilding. You just `cd` somewhere else.
+
+The problem is that the built-in `git worktree` commands are a little clunky. They don't handle branch naming, or navigation, or cleanup. So I wrote a tiny wrapper that does.
 
 ## What it does
 
-`wt` is a small Bash CLI that wraps git worktrees into four commands:
+`wt` is a Bash CLI with four commands:
 
-- **`wt create <name>`** — spins up a new worktree as a sibling directory with an auto-prefixed branch (e.g. `areel/fix-auth`), and optionally registers it with git-spice
-- **`wt nav`** — fuzzy-find and jump into any worktree using fzf
+- **`wt create <name>`** — spins up a new worktree as a sibling directory, auto-prefixes the branch (e.g. `areel/fix-auth`), and optionally registers it with [git-spice](https://github.com/abhinav/git-spice)
+- **`wt nav`** — fuzzy-find and jump into any worktree with `fzf`
 - **`wt remove`** — clean up a worktree, and optionally delete the branch too
 - **`wt list`** — see all active worktrees
 
-Worktrees live as sibling directories to my main repo, so my primary checkout is never touched. I can have three different things going at once and switch between them instantly.
+Worktrees live as siblings to my main repo, so my primary checkout never gets touched. I can have three things going at once and flip between them instantly.
 
 ## What's missing
 
-The big thing I still need is a post-create hook. Right now, `wt create` copies over tracked files into a new worktree, but that's it. In practice, there's always more setup — installing dependencies, building containers, adjusting config.
+The big thing I still want is a post-create hook. Right now, `wt create` copies tracked files into the new worktree and stops there. In practice, there's always more setup.
 
-At work, for example, creating a new worktree means I also have to run `docker compose build`, install all the node modules, copy over the `.env` file, and change the ports on every container so I'm not colliding with my main checkout. All of that could live in a `.wt/post-create` script that runs automatically after every `wt create`. That's the next thing I want to add.
+At work, for example, a fresh worktree means I also need to run `docker compose build`, reinstall node modules, copy over `.env`, and change the ports on every container so I don't collide with my main checkout. All of that _could_ live in a `.wt/post-create` script that runs after every `wt create`. That's the next thing I want to add.
