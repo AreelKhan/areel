@@ -77,9 +77,11 @@ const gridCols: Record<number, string> = {
                 ))}
               </div>
               <h3 class="font-serif text-2xl text-[#f1f5f9]">{p.data.title}</h3>
-              <p class="text-base text-[#90a1b9] tracking-tight leading-[26px]">
-                {p.data.description}
-              </p>
+              {p.data.description && (
+                <p class="text-base text-[#90a1b9] tracking-tight leading-[26px]">
+                  {p.data.description}
+                </p>
+              )}
               <div class="flex items-center gap-4 text-sm text-[#62748e] tracking-tight">
                 <span>{p.data.date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</span>
                 <span class="size-1 rounded-full bg-[#62748e]" />

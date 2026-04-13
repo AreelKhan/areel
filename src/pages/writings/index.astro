@@ -36,9 +36,11 @@ const posts = allPosts.sort(
           <h3 class="font-serif text-2xl text-[#f1f5f9]">{post.data.title}</h3>
 
           <!-- Description -->
-          <p class="text-base text-[#90a1b9] tracking-tight leading-[26px]">
-            {post.data.description}
-          </p>
+          {post.data.description && (
+            <p class="text-base text-[#90a1b9] tracking-tight leading-[26px]">
+              {post.data.description}
+            </p>
+          )}
 
           <!-- Meta -->
           <div class="flex items-center gap-4 text-sm text-[#62748e] tracking-tight">

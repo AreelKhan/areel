@@ -5,7 +5,7 @@ const writings = defineCollection({
 	loader: glob({ pattern: "**/*.mdx", base: "./src/content/writings" }),
 	schema: z.object({
 		title: z.string(),
-		description: z.string(),
+		description: z.string().optional(),
 		date: z.coerce.date(),
 		tags: z.array(z.string()),
 		readTime: z.string(),
