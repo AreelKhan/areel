@@ -22,4 +22,4 @@
 - [ ] Ensure symlink-related posts show as related to each other
 
 ## Publish
-- [ ] Publish website (github pages, railway, cloudflare, etc)
+- [x] Publish website (github pages)
