@@ -1,0 +1,33 @@
+---
+title: "MedChat"
+description: "A medical AI chat interface I built at a Cohere hackathon. It combined RAG over medical literature with AI-powered diagnostic imaging — and won first place."
+tags: ["ai", "hackathon", "rag"]
+featured: false
+color: "purple"
+github: "https://github.com/AreelKhan/MedChat"
+demo: "https://devpost.com/software/medchat-ro1b72"
+---
+
+## Context
+
+MedChat as my first ever hackathon win.
+
+In November 2023, [Cohere](https://cohere.com/) and [Waterloo.AI](https://uwaterloo.ca/artificial-intelligence-institute/) ran a hackathon at UWaterloo. About four hours to build something using Cohere's RAG API. I was teamed up with a friend, and two strangers, which became my friends.
+
+We built MedChat and won first place. The University of Waterloo wrote about it [here](https://uwaterloo.ca/artificial-intelligence-institute/news/medchat-wins-cohere-retrieval-augmentation-generation).
+
+## What we built
+
+MedChat was a medical AI chat interface. You could have a conversation with an AI agent that had RAG against medical documents and arxiv papers, so you'd ask a question and get answers grounded in real literature, with citations.
+
+The thing that set us apart was the imaging piece. You could upload a medical scan, an MRI, an X-ray, whatever, and the AI would call off-the-shelf medical imaging diagnosis models, get the diagnosis, and present it back to you in the conversation.
+
+## The fun part
+
+The agent had to decide whether to call a medical imaging diagnosis model, or just respond as normal. This was late 2023 ool calling was starting to become a thing, and Cohere didn't support it yet. So we had to build our own.
+
+The core problem was: when a user sends a message, how do you know if they want a literature lookup or if they want to run a diagnosis model? We used Cohere's classification API as a routing layer. The user's prompt goes into a first classification model that decides — is this a regular question, or does it need a diagnosis model? If it's regular, pass it through RAG as normal. If it needs a diagnosis, a second classification layer figures out _which_ imaging model to call.
+
+It was a hand-rolled version of what tool calling would become. Pretty hacky, but it worked. And honestly it was a fun constraint to build around — we couldn't just call `tools: [...]` and let the model figure it out. We had to actually think about how to route intent ourselves.
+
+Built the whole thing with Cohere's API, Streamlit for the interface, TensorFlow for the diagnostic models, and LangChain to wire it together.

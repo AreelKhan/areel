@@ -8,7 +8,7 @@
 - [x] Add project: wt (work tree management tool)
 - [ ] Add project: symlink (second brain)
 - [ ] Add project: Climate Hack (hackathon)
-- [ ] Add project: Med Chat (hackathon)
+- [x] Add project: Med Chat (hackathon)
 
 ## Posts
 - [ ] Write post: What is symlink & why build it

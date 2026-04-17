@@ -1,30 +1,32 @@
 ---
-import Layout from "../../layouts/Layout.astro";
 import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
 
 const allProjects = await getCollection("projects");
 
 const colorMap = {
-  purple: {
-    border: "border-[#ad46ff]",
-    shadow: "shadow-[8px_8px_0px_0px_rgba(168,85,247,0.3)]",
-    iconBorder: "border-[#c27aff]",
-    iconShadow: "shadow-[3px_3px_0px_0px_rgba(168,85,247,0.5)]",
-    iconGradient: "background-image: linear-gradient(135deg, #ad46ff 0%, #e60076 100%);",
-    tagBg: "bg-[rgba(173,70,255,0.2)]",
-    tagBorder: "border-[#ad46ff]",
-    tagText: "text-[#dab2ff]",
-  },
-  indigo: {
-    border: "border-[#615fff]",
-    shadow: "shadow-[8px_8px_0px_0px_rgba(99,102,241,0.3)]",
-    iconBorder: "border-[#7c86ff]",
-    iconShadow: "shadow-[3px_3px_0px_0px_rgba(99,102,241,0.5)]",
-    iconGradient: "background-image: linear-gradient(135deg, #615fff 0%, #155dfc 100%);",
-    tagBg: "bg-[rgba(97,95,255,0.2)]",
-    tagBorder: "border-[#615fff]",
-    tagText: "text-[#a3b3ff]",
-  },
+	purple: {
+		border: "border-[#ad46ff]",
+		shadow: "shadow-[8px_8px_0px_0px_rgba(168,85,247,0.3)]",
+		iconBorder: "border-[#c27aff]",
+		iconShadow: "shadow-[3px_3px_0px_0px_rgba(168,85,247,0.5)]",
+		iconGradient:
+			"background-image: linear-gradient(135deg, #ad46ff 0%, #e60076 100%);",
+		tagBg: "bg-[rgba(173,70,255,0.2)]",
+		tagBorder: "border-[#ad46ff]",
+		tagText: "text-[#dab2ff]",
+	},
+	indigo: {
+		border: "border-[#615fff]",
+		shadow: "shadow-[8px_8px_0px_0px_rgba(99,102,241,0.3)]",
+		iconBorder: "border-[#7c86ff]",
+		iconShadow: "shadow-[3px_3px_0px_0px_rgba(99,102,241,0.5)]",
+		iconGradient:
+			"background-image: linear-gradient(135deg, #615fff 0%, #155dfc 100%);",
+		tagBg: "bg-[rgba(97,95,255,0.2)]",
+		tagBorder: "border-[#615fff]",
+		tagText: "text-[#a3b3ff]",
+	},
 } as const;
 ---
 
@@ -41,7 +43,7 @@ const colorMap = {
       {allProjects.map((project) => {
         const c = colorMap[project.data.color];
         return (
-          <a href={`/projects/${project.id}`} class={`bg-[rgba(15,23,43,0.8)] rounded-[10px] border-4 ${c.border} ${c.shadow} p-9 flex flex-col gap-4 hover:brightness-110 transition`}>
+          <a href={`${import.meta.env.BASE_URL}/projects/${project.id}`} class={`bg-[rgba(15,23,43,0.8)] rounded-[10px] border-4 ${c.border} ${c.shadow} p-9 flex flex-col gap-4 hover:brightness-110 transition`}>
             <div class="flex items-start justify-between">
               <h3 class="font-serif text-2xl text-[#f1f5f9]">{project.data.title}</h3>
               <div

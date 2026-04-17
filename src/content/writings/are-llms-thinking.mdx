@@ -28,7 +28,7 @@ LLMs (like ChatGPT) simply predict the __next word__ in a sentence.
 Let's say you ask the LLM "How does a car work?". Here's how the answer gets generated<sup>[1](#f1)</sup>:
 
 <video controls style={{ width: "100%", margin: "2rem 0" }}>
-  <source src="/videos/AutoRegressionExample.mp4" type="video/mp4" />
+  <source src={`${import.meta.env.BASE_URL}/videos/AutoRegressionExample.mp4`} type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -53,7 +53,7 @@ I've actually been lying. I've been saying `LLMs predict the next word`. But tha
 A visualization will make more sense:
 
 <video controls style={{ width: "100%", margin: "2rem 0" }}>
-  <source src="/videos/TokenProbabilityDistributionExample.mp4" type="video/mp4" />
+  <source src={`${import.meta.env.BASE_URL}/videos/TokenProbabilityDistributionExample.mp4`} type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -85,7 +85,7 @@ An important confession: I was lying yet again. LLMs don't predict words at all.
 This is what it actually looks like:
 
 <video controls style={{ width: "100%", margin: "2rem 0" }}>
-  <source src="/videos/TokensNotWords.mp4" type="video/mp4" />
+  <source src={`${import.meta.env.BASE_URL}/videos/TokensNotWords.mp4`} type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
