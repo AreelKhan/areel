@@ -1,6 +1,6 @@
 ---
 title: "MedChat"
-description: "A medical AI chat interface I built at a Cohere hackathon. It combined RAG over medical literature with AI-powered diagnostic imaging — and won first place."
+description: "A medical AI chat interface I built at a Cohere hackathon. It combined RAG over medical literature with AI-powered diagnostic imaging. Won first place."
 tags: ["ai", "hackathon", "rag"]
 featured: false
 color: "purple"
@@ -26,8 +26,8 @@ The thing that set us apart was the imaging piece. You could upload a medical sc
 
 The agent had to decide whether to call a medical imaging diagnosis model, or just respond as normal. This was late 2023 ool calling was starting to become a thing, and Cohere didn't support it yet. So we had to build our own.
 
-The core problem was: when a user sends a message, how do you know if they want a literature lookup or if they want to run a diagnosis model? We used Cohere's classification API as a routing layer. The user's prompt goes into a first classification model that decides — is this a regular question, or does it need a diagnosis model? If it's regular, pass it through RAG as normal. If it needs a diagnosis, a second classification layer figures out _which_ imaging model to call.
+The core problem was: when a user sends a message, how do you know if they want a literature lookup or if they want to run a diagnosis model? We used Cohere's classification API as a routing layer. The user's prompt goes into a first classification model that decides, is this a regular question, or does it need a diagnosis model? If it's regular, pass it through RAG as normal. If it needs a diagnosis, a second classification layer figures out _which_ imaging model to call.
 
-It was a hand-rolled version of what tool calling would become. Pretty hacky, but it worked. And honestly it was a fun constraint to build around — we couldn't just call `tools: [...]` and let the model figure it out. We had to actually think about how to route intent ourselves.
+It was a hand-rolled version of what tool calling would become. Pretty hacky, but it worked. And honestly it was a fun constraint to build around, we couldn't just call `tools: [...]` and let the model figure it out. We had to actually think about how to route intent ourselves.
 
 Built the whole thing with Cohere's API, Streamlit for the interface, TensorFlow for the diagnostic models, and LangChain to wire it together.
